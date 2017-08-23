@@ -1,6 +1,7 @@
-package com.example.android.popularmoviesstage1.data;
+package com.example.android.popmovies.data;
 
 import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,7 @@ public class Movie {
     private ArrayList<Review> reviews;
     private ArrayList<Video> videos;
 
+    @ParcelConstructor
     public Movie(String title, String thumbnailPath, String plotSynopsis, double userRating, String releaseDate, int id) {
         this.title = title;
         if (thumbnailPath != null) {

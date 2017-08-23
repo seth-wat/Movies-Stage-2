@@ -1,8 +1,11 @@
-package com.example.android.popularmoviesstage1;
+package com.example.android.popmovies;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Parcelable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,16 +18,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.popularmoviesstage1.data.Movie;
-import com.example.android.popularmoviesstage1.utilities.JSONUtils;
-import com.example.android.popularmoviesstage1.utilities.NetworkUtils;
+import com.example.android.popmovies.data.Movie;
+import com.example.android.popmovies.loaders.MovieLoader;
+import com.example.android.popmovies.utilities.JSONUtils;
+import com.example.android.popmovies.utilities.NetworkUtils;
 
 import org.parceler.Parcels;
 
 import java.net.URL;
 import java.util.ArrayList;
 
-public class PosterActivity extends AppCompatActivity implements PosterAdapter.ItemClickListener {
+public class PosterActivity extends AppCompatActivity implements PosterAdapter.ItemClickListener, LoaderManager.LoaderCallbacks<ArrayList<Movie>> {
     public static final String LOG_TAG = PosterActivity.class.getSimpleName();
     RecyclerView posters;
     ProgressBar mProgressBar;
@@ -33,6 +37,7 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
     TextView mErrorView;
     Toast errorToast;
     ArrayList<Movie> movieData;
+    LoaderManager loaderManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +51,10 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
         posters = (RecyclerView) findViewById(R.id.posters_recycler_view);
 
         posters.setLayoutManager(new GridLayoutManager(this, 3));
+        loaderManager = getSupportLoaderManager();
 
         if (NetworkUtils.hasInternet(this)) {
-            new FetchDataTask().execute();
+            loaderManager.initLoader(MovieLoader.MOST_POPULAR_LOADER, null, this);
         } else {
             mErrorView.setVisibility(View.VISIBLE);
             mProgressBar.setVisibility(View.INVISIBLE);
@@ -59,7 +65,7 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
     public void onItemClick(View view, int position) {
         if (movieData != null) {
             //This needs to be called in the DetailActivity activity after the parcel is unwrapped VVVVVVVVVVVVVVVVV
-            JSONUtils.parseMovieDetails(NetworkUtils.getResponseFromURL(NetworkUtils.makeDetailQuery(movieData.get(position).getId())), movieData.get(position));
+//            JSONUtils.parseMovieDetails(NetworkUtils.getResponseFromURL(NetworkUtils.makeDetailQuery(movieData.get(position).getId())), movieData.get(position));
 
             Intent intent = new Intent(this, DetailActivity.class);
             Parcelable movieParcel = Parcels.wrap(movieData.get(position));
@@ -83,7 +89,7 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
             fetchUrl = NetworkUtils.HIGHEST_RATED_QUERY;
             if (NetworkUtils.hasInternet(this)) {
                 mHeaderView.setText(R.string.top_rated_header);
-                new FetchDataTask().execute();
+                loaderManager.initLoader(MovieLoader.TOP_RATED_LOADER, null, this);
             } else {
                 errorToast.show();
                 mProgressBar.setVisibility(View.INVISIBLE);
@@ -93,7 +99,7 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
             fetchUrl = NetworkUtils.MOST_POPULAR_QUERY;
             if (NetworkUtils.hasInternet(this)) {
                 mHeaderView.setText(R.string.most_popular_header);
-                new FetchDataTask().execute();
+                loaderManager.initLoader(MovieLoader.MOST_POPULAR_LOADER, null, this);
             } else {
                 errorToast.show();
                 mProgressBar.setVisibility(View.INVISIBLE);
@@ -103,34 +109,30 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public Loader<ArrayList<Movie>> onCreateLoader(int id, Bundle args) {
+        return new MovieLoader(this, errorToast, mErrorView, id);
+    }
 
-    private class FetchDataTask extends AsyncTask<Void, Void, ArrayList<Movie>> {
-        @Override
-        protected ArrayList<Movie> doInBackground(Void... params) {
-            errorToast.cancel();
-            URL url = NetworkUtils.urlFromString(fetchUrl);
-            if (url != null) {
-                String responseString = NetworkUtils.getResponseFromURL(url);
-                Log.v(LOG_TAG, responseString);
-                return JSONUtils.parseMovies(responseString);
-            }
-            return null;
+    @Override
+    public void onLoadFinished(Loader<ArrayList<Movie>> loader, ArrayList<Movie> movies) {
+        mProgressBar.setVisibility(View.INVISIBLE);
+        if (movies == null || movies.isEmpty()) {
+            mErrorView.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            mErrorView.setVisibility(View.INVISIBLE);
         }
+        PosterAdapter mAdapter = new PosterAdapter(PosterActivity.this, movies);
+        mAdapter.setOnClickListener(PosterActivity.this);
+        posters.setAdapter(mAdapter);
+        movieData = movies;
+    }
 
-        @Override
-        protected void onPostExecute(ArrayList<Movie> movies) {
-            mProgressBar.setVisibility(View.INVISIBLE);
-            if (movies == null || movies.isEmpty()) {
-                mErrorView.setVisibility(View.VISIBLE);
-                return;
-            } else {
-                mErrorView.setVisibility(View.INVISIBLE);
-            }
-            PosterAdapter mAdapter = new PosterAdapter(PosterActivity.this, movies);
-            mAdapter.setOnClickListener(PosterActivity.this);
-            posters.setAdapter(mAdapter);
-            movieData = movies;
-        }
+
+    @Override
+    public void onLoaderReset(Loader<ArrayList<Movie>> loader) {
+
     }
 
     @Override

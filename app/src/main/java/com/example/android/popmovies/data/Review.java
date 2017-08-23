@@ -1,6 +1,7 @@
-package com.example.android.popularmoviesstage1.data;
+package com.example.android.popmovies.data;
 
 import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
 
 /**
  * Holds review details for use in the Movie class.
@@ -10,6 +11,7 @@ public class Review {
     private String author;
     private String content;
 
+    @ParcelConstructor
     public Review(String author, String content) {
         this.author = author;
         this.content = content;

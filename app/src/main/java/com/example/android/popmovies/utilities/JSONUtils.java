@@ -1,8 +1,10 @@
-package com.example.android.popularmoviesstage1.utilities;
+package com.example.android.popmovies.utilities;
 
-import com.example.android.popularmoviesstage1.data.Movie;
-import com.example.android.popularmoviesstage1.data.Review;
-import com.example.android.popularmoviesstage1.data.Video;
+import android.util.Log;
+
+import com.example.android.popmovies.data.Movie;
+import com.example.android.popmovies.data.Review;
+import com.example.android.popmovies.data.Video;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +55,7 @@ public final class JSONUtils {
                 for (int i = 0; i < videos.length(); i++) {
                     JSONObject details = videos.getJSONObject(i);
                     if (details.get("site").equals("YouTube") && details.getString("type").equals("Trailer")) {
-                        Video v = new Video(details.getString("key"), details.getString("name"), details.getString("site"));
+                        Video v = new Video(details.getString("key"), details.getString("name"));
                         videoList.add(v);
                     }
                 }
@@ -61,6 +63,9 @@ public final class JSONUtils {
             if (reviews != null) {
                 for (int i = 0; i < reviews.length(); i++) {
                     JSONObject details = reviews.getJSONObject(i);
+                    String author = "No Author Specified";
+                    String content = "No review found.";
+
                     Review r = new Review(details.getString("author"), details.getString("content"));
                     reviewList.add(r);
                 }
@@ -68,10 +73,11 @@ public final class JSONUtils {
             }
             noDetails.setReviews(reviewList);
             noDetails.setVideos(videoList);
+            return noDetails;
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
 }

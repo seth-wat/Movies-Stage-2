@@ -1,4 +1,4 @@
-package com.example.android.popularmoviesstage1;
+package com.example.android.popmovies;
 
 import org.junit.Test;
 

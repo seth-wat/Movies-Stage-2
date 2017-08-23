@@ -1,21 +1,18 @@
-package com.example.android.popularmoviesstage1.utilities;
+package com.example.android.popmovies.utilities;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
-import com.example.android.popularmoviesstage1.data.ApiKey;
+import com.example.android.popmovies.data.ApiKey;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.Scanner;
 
 /**
  * Handles establishing the connection and fetching JSON data
@@ -28,7 +25,7 @@ public final class NetworkUtils {
     //Only returns results with at least 100 users votes, other wise data set is full of obscure movies.
     public static final String BASE_QUERY = "https://api.themoviedb.org/3/movie";
     public static final String MOST_POPULAR_QUERY = BASE_QUERY + "/popular?page=1&language=en-US&api_key=" + ApiKey.API_KEY;
-    public static final String HIGHEST_RATED_QUERY = BASE_QUERY + "/movie/top_rated?page=1&language=en-US&api_key=" + ApiKey.API_KEY;
+    public static final String HIGHEST_RATED_QUERY = BASE_QUERY + "/top_rated?page=1&language=en-US&api_key=" + ApiKey.API_KEY;
 
 
     public static URL urlFromString(String url) {

@@ -1,6 +1,7 @@
-package com.example.android.popularmoviesstage1.data;
+package com.example.android.popmovies.data;
 
 import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
 
 /**
  * Hold video details for use in the Movie class
@@ -12,10 +13,10 @@ public class Video {
     private String name;
     private String site;
 
-    public Video(String key, String name, String site) {
+    @ParcelConstructor
+    public Video(String key, String name) {
         this.key = key;
         this.name = name;
-        this.site = site;
     }
 
     public String getKey() {
@@ -26,7 +27,4 @@ public class Video {
         return name;
     }
 
-    public String getSite() {
-        return site;
-    }
 }
