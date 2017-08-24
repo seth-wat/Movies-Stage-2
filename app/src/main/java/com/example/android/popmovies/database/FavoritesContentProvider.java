@@ -16,8 +16,11 @@ import com.example.android.popmovies.data.Movie;
 public class FavoritesContentProvider extends ContentProvider {
 
     public static final int URI_MOVIE_MATCH_ID = 42;
-    public static final int URI_REVIEW_MATCH_ID = 44;
-    public static final int URI_VIDEO_MATCH_ID = 43;
+    public static final int URI_REVIEW_MATCH_ID = 43;
+    public static final int URI_VIDEO_MATCH_ID = 44;
+    public static final int URI_DELETE_FAVORITE_ID = 46;
+
+
     public static final UriMatcher sMatcher = buildUriMatcher();
 
     private FavoritesOpenHelper mOpenHelper;
@@ -28,6 +31,7 @@ public class FavoritesContentProvider extends ContentProvider {
         matcher.addURI(FavoritesContract.AUTHORITY, FavoritesContract.MOVE_TABLE, URI_MOVIE_MATCH_ID);
         matcher.addURI(FavoritesContract.AUTHORITY, FavoritesContract.REVIEW_TABLE, URI_REVIEW_MATCH_ID);
         matcher.addURI(FavoritesContract.AUTHORITY, FavoritesContract.VIDEO_TABLE, URI_VIDEO_MATCH_ID);
+        matcher.addURI(FavoritesContract.AUTHORITY, FavoritesContract.DELETE_PATH, URI_DELETE_FAVORITE_ID);
         return matcher;
     }
 
@@ -102,15 +106,10 @@ public class FavoritesContentProvider extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        switch(sMatcher.match(uri)) {
-            case URI_MOVIE_MATCH_ID:
-                break;
-            case URI_REVIEW_MATCH_ID:
-                break;
-            case URI_VIDEO_MATCH_ID:
-                break;
-            default:
-                throw new UnsupportedOperationException("Uri not matched: " + uri);
+        if (sMatcher.match(uri) == URI_DELETE_FAVORITE_ID) {
+            //delete query
+        } else {
+                throw new UnsupportedOperationException("Uri not matched:  " + uri);
         }
         return 0;
     }

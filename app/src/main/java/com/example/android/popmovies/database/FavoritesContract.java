@@ -12,6 +12,7 @@ public class FavoritesContract {
     public static final String MOVE_TABLE = "movies";
     public static final String REVIEW_TABLE = "reviews";
     public static final String VIDEO_TABLE = "videos";
+    public static final String DELETE_PATH = "delete";
 
 
     public static final class MovieEntry implements BaseColumns {
