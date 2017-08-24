@@ -64,9 +64,6 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
     @Override
     public void onItemClick(View view, int position) {
         if (movieData != null) {
-            //This needs to be called in the DetailActivity activity after the parcel is unwrapped VVVVVVVVVVVVVVVVV
-//            JSONUtils.parseMovieDetails(NetworkUtils.getResponseFromURL(NetworkUtils.makeDetailQuery(movieData.get(position).getId())), movieData.get(position));
-
             Intent intent = new Intent(this, DetailActivity.class);
             Parcelable movieParcel = Parcels.wrap(movieData.get(position));
             intent.putExtra("movieParcel", movieParcel);
@@ -85,36 +82,34 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.top_rated_item) {
-            fetchUrl = NetworkUtils.HIGHEST_RATED_QUERY;
-            if (NetworkUtils.hasInternet(this)) {
-                mHeaderView.setText(R.string.top_rated_header);
-                loaderManager.initLoader(MovieLoader.TOP_RATED_LOADER, null, this);
-            } else {
-                errorToast.show();
-                mProgressBar.setVisibility(View.INVISIBLE);
-            }
-            return true;
-        } else if (id == R.id.most_popular_item) {
-            fetchUrl = NetworkUtils.MOST_POPULAR_QUERY;
-            if (NetworkUtils.hasInternet(this)) {
-                mHeaderView.setText(R.string.most_popular_header);
-                loaderManager.initLoader(MovieLoader.MOST_POPULAR_LOADER, null, this);
-            } else {
-                errorToast.show();
-                mProgressBar.setVisibility(View.INVISIBLE);
-            }
-            return true;
-        } else if (id == R.id.favorites_item) {
-            if (NetworkUtils.hasInternet(this)) {
+        switch (id) {
+            case R.id.top_rated_item:
+                fetchUrl = NetworkUtils.HIGHEST_RATED_QUERY;
+                if (NetworkUtils.hasInternet(this)) {
+                    mHeaderView.setText(R.string.top_rated_header);
+                    loaderManager.initLoader(MovieLoader.TOP_RATED_LOADER, null, this);
+                } else {
+                    errorToast.show();
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                }
+                return true;
+            case R.id.most_popular_item:
+                fetchUrl = NetworkUtils.MOST_POPULAR_QUERY;
+                if (NetworkUtils.hasInternet(this)) {
+                    mHeaderView.setText(R.string.most_popular_header);
+                    loaderManager.initLoader(MovieLoader.MOST_POPULAR_LOADER, null, this);
+                } else {
+                    errorToast.show();
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                }
+                return true;
+            case R.id.favorites_item:
                 mHeaderView.setText(R.string.favorited_header);
                 loaderManager.initLoader(MovieLoader.FAVORITE_LOADER, null, this);
-            } else {
-                errorToast.show();
-                mProgressBar.setVisibility(View.INVISIBLE);
-            }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
