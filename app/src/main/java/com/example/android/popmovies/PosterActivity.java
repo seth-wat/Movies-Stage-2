@@ -105,6 +105,14 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
                 mProgressBar.setVisibility(View.INVISIBLE);
             }
             return true;
+        } else if (id == R.id.favorites_item) {
+            if (NetworkUtils.hasInternet(this)) {
+                mHeaderView.setText(R.string.favorited_header);
+                loaderManager.initLoader(MovieLoader.FAVORITE_LOADER, null, this);
+            } else {
+                errorToast.show();
+                mProgressBar.setVisibility(View.INVISIBLE);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -118,6 +126,9 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
     public void onLoadFinished(Loader<ArrayList<Movie>> loader, ArrayList<Movie> movies) {
         mProgressBar.setVisibility(View.INVISIBLE);
         if (movies == null || movies.isEmpty()) {
+            if (loader.getId() == MovieLoader.FAVORITE_LOADER) {
+                mErrorView.setText(R.string.no_favorite_message);
+            }
             mErrorView.setVisibility(View.VISIBLE);
             return;
         } else {
