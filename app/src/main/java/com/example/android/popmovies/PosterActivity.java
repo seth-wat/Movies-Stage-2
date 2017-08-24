@@ -122,11 +122,13 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
         mProgressBar.setVisibility(View.INVISIBLE);
         if (movies == null || movies.isEmpty()) {
             if (loader.getId() == MovieLoader.FAVORITE_LOADER) {
+                posters.setVisibility(View.INVISIBLE);
                 mErrorView.setText(R.string.no_favorite_message);
             }
             mErrorView.setVisibility(View.VISIBLE);
             return;
         } else {
+            posters.setVisibility(View.VISIBLE);
             mErrorView.setVisibility(View.INVISIBLE);
         }
         PosterAdapter mAdapter = new PosterAdapter(PosterActivity.this, movies);
