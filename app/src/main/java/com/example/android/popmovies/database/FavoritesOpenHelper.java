@@ -1,6 +1,8 @@
 package com.example.android.popmovies.database;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -50,5 +52,30 @@ public class FavoritesOpenHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS" + FavoritesContract.MOVE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS" + FavoritesContract.REVIEW_TABLE);
         db.execSQL("DROP TABLE IF EXISTS" + FavoritesContract.VIDEO_TABLE);
+    }
+
+    public static int isFavorite(ContentResolver contentResolver, String title) {
+        String[] mProjection = {FavoritesContract.MovieEntry._ID};
+        String mSelection = FavoritesContract.MovieEntry.COLUMN_TITLE + "=?";
+        String[] mSelectionArgs = {title};
+
+        Cursor queryResults = contentResolver.query(FavoritesContract.MovieEntry.ACCESS_URI, mProjection, mSelection, mSelectionArgs, null);
+        if (queryResults != null) {
+            //grab the id from cursor and return it
+        }
+        return -1;
+    }
+
+    public static Cursor fetchMovieFromKey(ContentResolver contentResolver, int movieKey) {
+        String[] mProjection = {"*"};
+        String mSelectionMovie = FavoritesContract.MovieEntry._ID + "=?";
+        String mSelectionReview = FavoritesContract.ReviewEntry.COLUMN_ID_MOVIE + "=?";
+        String mSelectionVideo = FavoritesContract.VideoEntry.COLUMN_ID_MOVIE + "=?";
+        String[] mSelectionArgs = {Integer.toString(movieKey)};
+        return null;
+    }
+
+    public static Cursor fetchMoviesFromFavorites(ContentResolver contentResolver) {
+        return null;
     }
 }
