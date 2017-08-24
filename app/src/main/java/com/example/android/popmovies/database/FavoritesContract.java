@@ -13,6 +13,7 @@ public class FavoritesContract {
     public static final String REVIEW_TABLE = "reviews";
     public static final String VIDEO_TABLE = "videos";
     public static final String DELETE_PATH = "delete";
+    public static final Uri DELETE_URI = BASE_URI.buildUpon().appendPath(DELETE_PATH).build();
 
 
     public static final class MovieEntry implements BaseColumns {
