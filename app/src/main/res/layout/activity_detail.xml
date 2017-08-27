@@ -16,11 +16,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:tint="@android:color/white"
                 android:layout_marginRight="8dp"
-                app:layout_constraintTop_toTopOf="@+id/drop_image_view"
+                android:tint="@android:color/white"
                 app:layout_constraintBottom_toTopOf="@id/drop_image_view"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/drop_image_view"
                 app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
 
@@ -40,36 +40,36 @@
                 android:id="@+id/release_date_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                app:layout_constraintLeft_toLeftOf="@+id/title_text_view"
-                tools:text="2015"
                 android:layout_marginTop="0dp"
-                android:layout_marginBottom="0dp"
                 app:layout_constraintBottom_toTopOf="@+id/rating_text_view"
-                app:layout_constraintTop_toBottomOf="@+id/rating_text_view" />
+                app:layout_constraintLeft_toLeftOf="@+id/title_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/rating_text_view"
+                tools:text="2015" />
 
             <TextView
                 android:id="@+id/rating_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                tools:text="8.1 / 10"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/title_text_view"
+                android:textSize="24sp"
                 app:layout_constraintLeft_toRightOf="@+id/release_date_text_view"
-                android:layout_marginLeft="8dp" />
+                app:layout_constraintTop_toBottomOf="@+id/title_text_view"
+                tools:text="8.1 / 10" />
 
             <TextView
                 android:id="@+id/duration_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/rating_text_view"
-                tools:text="120 min"
                 android:layout_marginBottom="0dp"
+                android:layout_marginLeft="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/rating_text_view"
                 app:layout_constraintLeft_toRightOf="@+id/rating_text_view"
-                android:layout_marginLeft="8dp" />
+                app:layout_constraintTop_toBottomOf="@+id/rating_text_view"
+                tools:text="120 min" />
 
             <ImageView
                 android:id="@+id/drop_image_view"
@@ -103,14 +103,14 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/synopsis_frame" />
 
-            <include
-                android:id="@+id/review_include"
-                layout="@layout/layout_review"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/review_recycler_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/trailer_include" />
+                app:layout_constraintTop_toBottomOf="@+id/trailer_include">
+            </android.support.v7.widget.RecyclerView>
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
