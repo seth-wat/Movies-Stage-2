@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.android.popmovies.data.Movie;
 
+import java.util.ArrayList;
+
 
 public class FavoritesOpenHelper extends SQLiteOpenHelper{
 
@@ -61,18 +63,22 @@ public class FavoritesOpenHelper extends SQLiteOpenHelper{
 
         Cursor queryResults = contentResolver.query(FavoritesContract.MovieEntry.ACCESS_URI, mProjection, mSelection, mSelectionArgs, null);
         if (queryResults != null) {
-            //grab the id from cursor and return it
+            queryResults.moveToFirst();
+            return queryResults.getInt(queryResults.getColumnIndex(FavoritesContract.MovieEntry._ID));
         }
         return -1;
     }
 
-    public static Cursor fetchMovieFromKey(ContentResolver contentResolver, int movieKey) {
-        String[] mProjection = {"*"};
+    public static ArrayList<Cursor> fetchMovieFromKey(ContentResolver contentResolver, int movieKey) {
         String mSelectionMovie = FavoritesContract.MovieEntry._ID + "=?";
         String mSelectionReview = FavoritesContract.ReviewEntry.COLUMN_ID_MOVIE + "=?";
         String mSelectionVideo = FavoritesContract.VideoEntry.COLUMN_ID_MOVIE + "=?";
         String[] mSelectionArgs = {Integer.toString(movieKey)};
-        return null;
+        ArrayList<Cursor> returnCursor = null;
+        returnCursor.add(contentResolver.query(FavoritesContract.MovieEntry.ACCESS_URI, null, mSelectionMovie, mSelectionArgs, null));
+        returnCursor.add(contentResolver.query(FavoritesContract.ReviewEntry.ACCESS_URI, null, mSelectionReview, mSelectionArgs, null));
+        returnCursor.add(contentResolver.query(FavoritesContract.VideoEntry.ACCESS_URI, null, mSelectionVideo, mSelectionArgs, null));
+        return returnCursor;
     }
 
     public static Cursor fetchMoviesFromFavorites(ContentResolver contentResolver) {

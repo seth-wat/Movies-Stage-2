@@ -45,16 +45,21 @@ public class FavoritesContentProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+        Cursor returnCursor = null;
         switch(sMatcher.match(uri)) {
             case URI_MOVIE_MATCH_ID:
+                returnCursor = db.query(FavoritesContract.MOVE_TABLE, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             case URI_REVIEW_MATCH_ID:
+                returnCursor = db.query(FavoritesContract.REVIEW_TABLE, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             case URI_VIDEO_MATCH_ID:
+                returnCursor = db.query(FavoritesContract.VIDEO_TABLE, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             default:
                 throw new UnsupportedOperationException("Uri not matched: " + uri);
         }
+        returnCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return null;
     }
 
