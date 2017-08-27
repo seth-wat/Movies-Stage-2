@@ -6,6 +6,8 @@
     <string name="item_top_rated">Top Rated</string>
     <string name="item_most_popluar">Most Popular</string>
     <string name="item_favorited">Favorites</string>
-    <string name="favorited_header">Favorite Moves</string>
+    <string name="favorited_header">Favorite Movies</string>
     <string name="no_favorite_message">There are no favorite movies in your library, add some!</string>
+    <string name="review_header">Reviews</string>
+    <string name="trailer_header">Movie Trailers</string>
 </resources>
