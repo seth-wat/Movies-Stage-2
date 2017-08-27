@@ -50,7 +50,7 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
         errorToast = Toast.makeText(this, R.string.error_msg, Toast.LENGTH_LONG);
         posters = (RecyclerView) findViewById(R.id.posters_recycler_view);
 
-        posters.setLayoutManager(new GridLayoutManager(this, 3));
+        posters.setLayoutManager(new GridLayoutManager(this, 2));
         loaderManager = getSupportLoaderManager();
 
         if (NetworkUtils.hasInternet(this)) {
