@@ -31,7 +31,7 @@ public final class JSONUtils {
                     singleMovie = results.getJSONObject(i);
                     listOfMovies.add(new Movie(singleMovie
                             .getString("title"), singleMovie
-                            .getString("backdrop_path"), singleMovie
+                            .getString("poster_path"), singleMovie
                             .getString("overview"), singleMovie
                             .getDouble("vote_average"), singleMovie
                             .getString("release_date"), singleMovie
@@ -63,9 +63,6 @@ public final class JSONUtils {
             if (reviews != null) {
                 for (int i = 0; i < reviews.length(); i++) {
                     JSONObject details = reviews.getJSONObject(i);
-                    String author = "No Author Specified";
-                    String content = "No review found.";
-
                     Review r = new Review(details.getString("author"), details.getString("content"));
                     reviewList.add(r);
                 }
