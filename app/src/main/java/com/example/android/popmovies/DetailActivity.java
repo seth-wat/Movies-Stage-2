@@ -30,13 +30,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     Movie myMovie;
     ActivityDetailBinding mBinder;
+    LinearLayoutManager reviewLayoutManager;
+    ReviewAdapter reviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_detail);
-        LinearLayoutManager reviewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        reviewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         Intent mIntent = getIntent();
         myMovie = Parcels.unwrap(mIntent.getParcelableExtra("movieParcel"));
@@ -53,11 +55,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         getSupportLoaderManager().initLoader(123, null, this);
 
 
-
-
     }
-
-
 
 
     @Override
@@ -71,6 +69,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             final ArrayList<Review> reviews = myMovie.getReviews();
             int currentIndex = 0;
             if (!(reviews.size() < 0)) {
+                mBinder.reviewRecyclerView.setLayoutManager(reviewLayoutManager);
+                mBinder.reviewRecyclerView.setAdapter(new ReviewAdapter(this, this, reviews));
                 return;
             }
 
