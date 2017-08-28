@@ -32,3 +32,7 @@ proguard/
 captures/
 
 \.idea/workspace\.xml
+
+\.idea/
+
+app/src/main/java/com/example/android/popmovies/data/ApiKey\.java

@@ -18,7 +18,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginRight="8dp"
                 android:tint="@android:color/white"
-                app:layout_constraintBottom_toTopOf="@id/drop_image_view"
+                app:layout_constraintBottom_toTopOf="@+id/drop_image_view"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/drop_image_view"
                 app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
