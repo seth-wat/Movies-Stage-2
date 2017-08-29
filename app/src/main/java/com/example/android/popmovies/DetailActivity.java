@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.android.popmovies.data.Movie;
 import com.example.android.popmovies.data.Review;
+import com.example.android.popmovies.data.Video;
 import com.example.android.popmovies.databinding.ActivityDetailBinding;
 import com.example.android.popmovies.events.ReviewClickHandler;
 import com.example.android.popmovies.loaders.DetailLoader;
@@ -41,7 +42,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_detail);
-        reviewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        reviewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         Intent mIntent = getIntent();
         myMovie = Parcels.unwrap(mIntent.getParcelableExtra("movieParcel"));
@@ -71,8 +72,14 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(Loader<Movie> loader, Movie data) {
         if (data != null) {
-            final ArrayList<Review> reviews = myMovie.getReviews();
-            if (!(reviews.size() < 0)) {
+            final ArrayList<Review> reviews = (!myMovie.getReviews().isEmpty()) ? myMovie.getReviews() : null;
+            final ArrayList<Video> videos = (!myMovie.getVideos().isEmpty()) ? myMovie.getVideos() : null;
+            if (!(videos == null) && !(videos.size() < 0)) {
+                mBinder.trailerRecyclerView.setLayoutManager(reviewLayoutManager);
+                mBinder.trailerRecyclerView.setAdapter(new TrailerAdapter(this, videos));
+
+            }
+            if (!(reviews == null) && !(reviews.size() < 0)) {
                 mBinder.reviewInclude.synopsisFrame.setText(reviews.get(0).getContent());
                 mBinder.reviewInclude.userNameTextView.setText(reviews.get(0).getAuthor());
                 ReviewClickHandler mReviewClickHandler = new ReviewClickHandler(reviews, mBinder.reviewInclude.userNameTextView, mBinder.reviewInclude.synopsisFrame,
@@ -80,11 +87,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
                 mBinder.reviewInclude.buttonNext.setOnClickListener(mReviewClickHandler);
                 mBinder.reviewInclude.buttonPrevious.setOnClickListener(mReviewClickHandler);
-                return;
-            }
-
-            if (!data.getVideos().isEmpty()) {
-                return;
             }
         }
     }
