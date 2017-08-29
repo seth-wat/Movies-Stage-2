@@ -7,9 +7,11 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import com.example.android.popmovies.data.Movie;
 import com.example.android.popmovies.data.Review;
 import com.example.android.popmovies.databinding.ActivityDetailBinding;
+import com.example.android.popmovies.events.ReviewClickHandler;
 import com.example.android.popmovies.loaders.DetailLoader;
 import com.squareup.picasso.Picasso;
 
@@ -31,7 +34,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     Movie myMovie;
     ActivityDetailBinding mBinder;
     LinearLayoutManager reviewLayoutManager;
-    ReviewAdapter reviewAdapter;
+//    ReviewAdapter reviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     }
 
 
+
+
     @Override
     public Loader<Movie> onCreateLoader(int id, Bundle args) {
         return new DetailLoader(this, myMovie);
@@ -67,10 +72,14 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     public void onLoadFinished(Loader<Movie> loader, Movie data) {
         if (data != null) {
             final ArrayList<Review> reviews = myMovie.getReviews();
-            int currentIndex = 0;
             if (!(reviews.size() < 0)) {
-                mBinder.reviewRecyclerView.setLayoutManager(reviewLayoutManager);
-                mBinder.reviewRecyclerView.setAdapter(new ReviewAdapter(this, this, reviews));
+                mBinder.reviewInclude.synopsisFrame.setText(reviews.get(0).getContent());
+                mBinder.reviewInclude.userNameTextView.setText(reviews.get(0).getAuthor());
+                ReviewClickHandler mReviewClickHandler = new ReviewClickHandler(reviews, mBinder.reviewInclude.userNameTextView, mBinder.reviewInclude.synopsisFrame,
+                        mBinder.reviewInclude.buttonNext, mBinder.reviewInclude.buttonPrevious);
+
+                mBinder.reviewInclude.buttonNext.setOnClickListener(mReviewClickHandler);
+                mBinder.reviewInclude.buttonPrevious.setOnClickListener(mReviewClickHandler);
                 return;
             }
 
