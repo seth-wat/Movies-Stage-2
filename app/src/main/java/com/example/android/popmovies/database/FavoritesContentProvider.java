@@ -60,7 +60,7 @@ public class FavoritesContentProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Uri not matched: " + uri);
         }
         returnCursor.setNotificationUri(getContext().getContentResolver(), uri);
-        return null;
+        return returnCursor;
     }
 
     @Nullable
@@ -113,14 +113,14 @@ public class FavoritesContentProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         if (sMatcher.match(uri) == URI_DELETE_FAVORITE_ID) {
             //delete query
-            db.delete(FavoritesContract.REVIEW_TABLE, selection, selectionArgs);
-            db.delete(FavoritesContract.VIDEO_TABLE, selection, selectionArgs);
-            db.delete(FavoritesContract.MOVE_TABLE, selection, selectionArgs);
+            int reviewRowsDeleted = db.delete(FavoritesContract.REVIEW_TABLE, FavoritesContract.ReviewEntry.COLUMN_ID_MOVIE + "=?", selectionArgs);
+            int dbRowsDeleted = db.delete(FavoritesContract.VIDEO_TABLE, FavoritesContract.VideoEntry.COLUMN_ID_MOVIE + "=?", selectionArgs);
+            int movieRowsDeleted = db.delete(FavoritesContract.MOVE_TABLE, selection, selectionArgs);
             getContext().getContentResolver().notifyChange(uri, null);
+            return reviewRowsDeleted + dbRowsDeleted + movieRowsDeleted;
         } else {
                 throw new UnsupportedOperationException("Uri not matched:  " + uri);
         }
-        return 0;
     }
 
     @Override
