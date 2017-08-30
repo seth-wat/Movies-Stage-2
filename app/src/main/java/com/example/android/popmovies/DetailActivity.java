@@ -20,6 +20,7 @@ import com.example.android.popmovies.data.Movie;
 import com.example.android.popmovies.data.Review;
 import com.example.android.popmovies.data.Video;
 import com.example.android.popmovies.databinding.ActivityDetailBinding;
+import com.example.android.popmovies.events.FavoriteClickHandler;
 import com.example.android.popmovies.events.ReviewClickHandler;
 import com.example.android.popmovies.loaders.DetailLoader;
 import com.squareup.picasso.Picasso;
@@ -95,6 +96,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 mBinder.reviewInclude.buttonNext.setOnClickListener(mReviewClickHandler);
                 mBinder.reviewInclude.buttonPrevious.setOnClickListener(mReviewClickHandler);
             }
+            mBinder.fab.setOnClickListener(new FavoriteClickHandler(data, mBinder.dropImageView, data.getFavorite()));
         }
     }
 
