@@ -46,6 +46,7 @@ public class DetailLoader extends AsyncTaskLoader<Movie> {
             String response = NetworkUtils.getResponseFromURL(url);
             Movie fullMovie = JSONUtils.parseMovieDetails(response, baseMovie);
             fullMovie.setFavorite(true);
+            return fullMovie;
 
 //            ArrayList<Cursor> movieDataList = FavoritesOpenHelper.fetchMovieFromKey(getContext().getContentResolver(), movieKey);
 
@@ -55,6 +56,5 @@ public class DetailLoader extends AsyncTaskLoader<Movie> {
             String response = NetworkUtils.getResponseFromURL(url);
             return JSONUtils.parseMovieDetails(response, baseMovie);
         }
-        return null;
     }
 }
