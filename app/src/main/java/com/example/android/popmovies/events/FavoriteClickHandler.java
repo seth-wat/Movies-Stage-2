@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -38,6 +39,8 @@ public class FavoriteClickHandler implements View.OnClickListener {
     private ImageView mImage;
     private Context context;
     private LoaderManager.LoaderCallbacks<Object> callbacks;
+    public static int sAddLoaderId = 107;
+    public static int sRemoveLoaderId = 109;
 
     public FavoriteClickHandler(Movie movie, ImageView imageView, boolean isFavorited) {
         this.movie = movie;
@@ -48,7 +51,7 @@ public class FavoriteClickHandler implements View.OnClickListener {
     @Override
     public void onClick(final View v) {
         if (isFavorited) {
-
+            final Activity callingActivity = (Activity) v.getContext();
             callbacks =  new LoaderManager.LoaderCallbacks<Object>() {
 
                 @Override
@@ -63,8 +66,12 @@ public class FavoriteClickHandler implements View.OnClickListener {
                         public Boolean loadInBackground() {
                             ContentResolver contentResolver = getContext().getContentResolver();
                             int databaseMovieId = FavoritesOpenHelper.isFavorite(contentResolver, movie.getTitle());
-                            contentResolver.delete(FavoritesContract.DELETE_URI, "_id=?", new String[]{Integer.toString(databaseMovieId)});
-                            return true;
+                            if (databaseMovieId != -1) {
+                                int numRowsDeleted = contentResolver.delete(FavoritesContract.DELETE_URI, FavoritesContract.MovieEntry._ID + "=?", new String[]{Integer.toString(databaseMovieId)});
+                                Log.e("CSDFSDFSD", "====================================" + numRowsDeleted);
+                                return true;
+                            }
+                            return false;
                         }
                     };
                 }
@@ -78,6 +85,10 @@ public class FavoriteClickHandler implements View.OnClickListener {
                     fab.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                     isFavorited = false;
                     Toast.makeText(v.getContext(), "Movie successfully removed from favorites database", Toast.LENGTH_SHORT).show();
+                    if (callingActivity.getLoaderManager().getLoader(sAddLoaderId) != null) {
+                        callingActivity.getLoaderManager().destroyLoader(sAddLoaderId);
+                    }
+
 
                 }
 
@@ -86,7 +97,7 @@ public class FavoriteClickHandler implements View.OnClickListener {
 
                 }
             };
-            Activity callingActivity = (Activity) v.getContext();
+
             callingActivity.getLoaderManager().initLoader(109, null, callbacks);
 
 
@@ -99,13 +110,13 @@ public class FavoriteClickHandler implements View.OnClickListener {
             movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_SYNOPSIS, movie.getPlotSynopsis());
 
             Bitmap bitmap = ((BitmapDrawable) mImage.getDrawable()).getBitmap();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] imageInByte = baos.toByteArray();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            byte[] imageBlob = outputStream.toByteArray();
 
-            movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_IMAGE, imageInByte);
+            movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_IMAGE, imageBlob);
 
-            Activity host = (Activity) v.getContext();
+            final Activity host = (Activity) v.getContext();
 
             callbacks =  new LoaderManager.LoaderCallbacks<Object>() {
 
@@ -158,6 +169,9 @@ public class FavoriteClickHandler implements View.OnClickListener {
                     fab.setImageResource(R.drawable.ic_favorited_black_24dp);
                     isFavorited = true;
                     Toast.makeText(v.getContext(), "Inserted into favorites database", Toast.LENGTH_SHORT).show();
+                    if (host.getLoaderManager().getLoader(sRemoveLoaderId) != null) {
+                        host.getLoaderManager().destroyLoader(sRemoveLoaderId);
+                    }
 
 
                 }
@@ -168,7 +182,7 @@ public class FavoriteClickHandler implements View.OnClickListener {
                 }
             };
 
-            host.getLoaderManager().initLoader(107, null, callbacks);
+            host.getLoaderManager().initLoader(sAddLoaderId, null, callbacks);
 
             //insert on the background thread, query for id, then insert the other two sections.
 
