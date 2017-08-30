@@ -35,6 +35,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     Movie myMovie;
     ActivityDetailBinding mBinder;
     LinearLayoutManager reviewLayoutManager;
+    ReviewClickHandler mReviewClickHandler;
+    int reviewIndex;
 //    ReviewAdapter reviewAdapter;
 
     @Override
@@ -43,6 +45,10 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         setContentView(R.layout.activity_detail);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_detail);
         reviewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+
+        if (savedInstanceState != null) {
+             reviewIndex = savedInstanceState.getInt("index");
+        }
 
         Intent mIntent = getIntent();
         myMovie = Parcels.unwrap(mIntent.getParcelableExtra("movieParcel"));
@@ -72,17 +78,18 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(Loader<Movie> loader, Movie data) {
         if (data != null) {
-            final ArrayList<Review> reviews = (!myMovie.getReviews().isEmpty()) ? myMovie.getReviews() : null;
-            final ArrayList<Video> videos = (!myMovie.getVideos().isEmpty()) ? myMovie.getVideos() : null;
-            if (!(videos == null) && !(videos.size() < 0)) {
+            final ArrayList<Review> reviews = !myMovie.getReviews().isEmpty() ? myMovie.getReviews() : null;
+            final ArrayList<Video> videos = !myMovie.getVideos().isEmpty() ? myMovie.getVideos() : null;
+            if (! (videos == null)) {
                 mBinder.trailerRecyclerView.setLayoutManager(reviewLayoutManager);
                 mBinder.trailerRecyclerView.setAdapter(new TrailerAdapter(this, videos, this));
 
             }
-            if (!(reviews == null) && !(reviews.size() < 0)) {
-                mBinder.reviewInclude.synopsisFrame.setText(reviews.get(0).getContent());
-                mBinder.reviewInclude.userNameTextView.setText(reviews.get(0).getAuthor());
-                ReviewClickHandler mReviewClickHandler = new ReviewClickHandler(reviews, mBinder.reviewInclude.userNameTextView, mBinder.reviewInclude.synopsisFrame,
+
+            if (! (reviews == null)) {
+                mBinder.reviewInclude.synopsisFrame.setText(reviews.get(reviewIndex).getContent());
+                mBinder.reviewInclude.userNameTextView.setText(reviews.get(reviewIndex).getAuthor());
+                mReviewClickHandler = new ReviewClickHandler(reviews, reviewIndex, mBinder.reviewInclude.userNameTextView, mBinder.reviewInclude.synopsisFrame,
                         mBinder.reviewInclude.buttonNext, mBinder.reviewInclude.buttonPrevious);
 
                 mBinder.reviewInclude.buttonNext.setOnClickListener(mReviewClickHandler);
@@ -94,5 +101,17 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoaderReset(Loader<Movie> loader) {
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("index", mReviewClickHandler.getIndex());
+        super.onSaveInstanceState(outState);
     }
 }
