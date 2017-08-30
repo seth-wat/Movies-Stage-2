@@ -55,6 +55,7 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
 
         if (NetworkUtils.hasInternet(this)) {
             loaderManager.initLoader(MovieLoader.MOST_POPULAR_LOADER, null, this);
+            mHeaderView.setText(R.string.most_popular_header);
         } else {
             mErrorView.setVisibility(View.VISIBLE);
             mProgressBar.setVisibility(View.INVISIBLE);
