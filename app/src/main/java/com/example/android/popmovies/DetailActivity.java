@@ -96,6 +96,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 mBinder.reviewInclude.buttonNext.setOnClickListener(mReviewClickHandler);
                 mBinder.reviewInclude.buttonPrevious.setOnClickListener(mReviewClickHandler);
             }
+            if (data.getFavorite()) {
+                mBinder.fab.setImageResource(R.drawable.ic_favorited_black_24dp);
+            }
             mBinder.fab.setOnClickListener(new FavoriteClickHandler(data, mBinder.dropImageView, data.getFavorite()));
         }
     }
