@@ -16,7 +16,9 @@ public class Movie {
     private String plotSynopsis;
     private double userRating;
     private String releaseDate;
+    private boolean favorite = false;
     private int id;
+
 
     private ArrayList<Review> reviews;
     private ArrayList<Video> videos;
@@ -59,6 +61,10 @@ public class Movie {
         return releaseDate;
     }
 
+    public boolean getFavorite() {
+        return favorite;
+    }
+
     public int getId() {return id;}
 
     public ArrayList<Review> getReviews() {
@@ -75,5 +81,9 @@ public class Movie {
 
     public void setVideos(ArrayList<Video> videos) {
         this.videos = videos;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }
