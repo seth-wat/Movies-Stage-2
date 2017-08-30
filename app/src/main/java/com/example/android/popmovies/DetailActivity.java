@@ -76,7 +76,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             final ArrayList<Video> videos = (!myMovie.getVideos().isEmpty()) ? myMovie.getVideos() : null;
             if (!(videos == null) && !(videos.size() < 0)) {
                 mBinder.trailerRecyclerView.setLayoutManager(reviewLayoutManager);
-                mBinder.trailerRecyclerView.setAdapter(new TrailerAdapter(this, videos));
+                mBinder.trailerRecyclerView.setAdapter(new TrailerAdapter(this, videos, this));
 
             }
             if (!(reviews == null) && !(reviews.size() < 0)) {
