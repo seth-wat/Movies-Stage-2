@@ -105,8 +105,6 @@ public class FavoriteClickHandler implements View.OnClickListener {
 
             movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_IMAGE, imageInByte);
 
-            final ContentValues reviewContentValues = new ContentValues();
-
             Activity host = (Activity) v.getContext();
 
             callbacks =  new LoaderManager.LoaderCallbacks<Object>() {
