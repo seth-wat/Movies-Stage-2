@@ -62,11 +62,13 @@ public class FavoritesOpenHelper extends SQLiteOpenHelper{
         String[] mSelectionArgs = {title};
 
         Cursor queryResults = contentResolver.query(FavoritesContract.MovieEntry.ACCESS_URI, mProjection, mSelection, mSelectionArgs, null);
-        if (queryResults != null) {
+        int returnInt = -1;
+        if (queryResults != null && queryResults.getCount() > 0) {
             queryResults.moveToFirst();
-            return queryResults.getInt(queryResults.getColumnIndex(FavoritesContract.MovieEntry._ID));
+            returnInt = queryResults.getInt(queryResults.getColumnIndex(FavoritesContract.MovieEntry._ID));
+            queryResults.close();
         }
-        return -1;
+        return returnInt;
     }
 
     public static ArrayList<Cursor> fetchMovieFromKey(ContentResolver contentResolver, int movieKey) {
