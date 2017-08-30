@@ -12,6 +12,7 @@ import com.example.android.popmovies.utilities.JSONUtils;
 import com.example.android.popmovies.utilities.NetworkUtils;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Used in DetailActivity to fetch reviews and videos.
@@ -39,7 +40,14 @@ public class DetailLoader extends AsyncTaskLoader<Movie> {
 
         //check return value to determine weather to load from db or network
 
-        if (FavoritesOpenHelper.isFavorite(getContext().getContentResolver(), baseMovie.getTitle()) != -1) {
+        int movieKey = FavoritesOpenHelper.isFavorite(getContext().getContentResolver(), baseMovie.getTitle());
+        if (movieKey != -1) {
+            URL url = NetworkUtils.makeDetailQuery(baseMovie.getId());
+            String response = NetworkUtils.getResponseFromURL(url);
+            Movie fullMovie = JSONUtils.parseMovieDetails(response, baseMovie);
+            fullMovie.setFavorite(true);
+
+//            ArrayList<Cursor> movieDataList = FavoritesOpenHelper.fetchMovieFromKey(getContext().getContentResolver(), movieKey);
 
             // do something
         } else {
