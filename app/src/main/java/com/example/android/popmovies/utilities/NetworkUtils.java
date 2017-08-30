@@ -26,6 +26,7 @@ public final class NetworkUtils {
     public static final String BASE_QUERY = "https://api.themoviedb.org/3/movie";
     public static final String MOST_POPULAR_QUERY = BASE_QUERY + "/popular?page=1&language=en-US&api_key=" + ApiKey.API_KEY;
     public static final String HIGHEST_RATED_QUERY = BASE_QUERY + "/top_rated?page=1&language=en-US&api_key=" + ApiKey.API_KEY;
+    public static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
 
 
     public static URL urlFromString(String url) {
@@ -70,7 +71,4 @@ public final class NetworkUtils {
         return urlFromString(BASE_QUERY + "/" + id + "?api_key=" + ApiKey.API_KEY + "&append_to_response=videos,reviews");
     }
 
-    public static URL makeVieoQuery(String key) {
-        return urlFromString("https://www.youtube.com/watch?v=" + key);
-    }
 }
