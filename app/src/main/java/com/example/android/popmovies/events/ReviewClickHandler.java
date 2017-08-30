@@ -23,8 +23,9 @@ public class ReviewClickHandler implements View.OnClickListener {
     private Button prevButton;
 
 
-    public ReviewClickHandler(ArrayList<Review> reviews, TextView authorTextView, TextView contentTextView, Button nextButton, Button prevButton) {
+    public ReviewClickHandler(ArrayList<Review> reviews, int index, TextView authorTextView, TextView contentTextView, Button nextButton, Button prevButton) {
         this.reviews = reviews;
+        this.index = index;
         this.authorTextView = authorTextView;
         this.contentTextView = contentTextView;
         this.nextButton = nextButton;
@@ -58,5 +59,9 @@ public class ReviewClickHandler implements View.OnClickListener {
             authorTextView.setText(review.getAuthor());
             contentTextView.setText(review.getContent());
         }
+    }
+
+    public int getIndex() {
+        return index;
     }
 }
