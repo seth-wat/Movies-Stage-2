@@ -1,6 +1,8 @@
 package com.example.android.popmovies;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +59,12 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.ViewHolder
         }
 
         public void bind(final int position) {
-            Picasso.with(context).load(mData.get(position).getThumbnailPath()).into(mImageView);
+            if (mData.get(position).getByteImage() != null) {
+                    Bitmap image = BitmapFactory.decodeByteArray(mData.get(position).getByteImage(), 0, mData.get(position).getByteImage().length);
+                    mImageView.setImageBitmap(image);
+            } else {
+                Picasso.with(context).load(mData.get(position).getThumbnailPath()).into(mImageView);
+            }
             mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
