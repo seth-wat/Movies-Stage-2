@@ -4,10 +4,12 @@ package com.example.android.popmovies.loaders;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import com.example.android.popmovies.data.Movie;
 import com.example.android.popmovies.database.FavoritesContract;
 import com.example.android.popmovies.database.FavoritesOpenHelper;
+import com.example.android.popmovies.utilities.CursorUtils;
 import com.example.android.popmovies.utilities.JSONUtils;
 import com.example.android.popmovies.utilities.NetworkUtils;
 
@@ -42,11 +44,20 @@ public class DetailLoader extends AsyncTaskLoader<Movie> {
 
         int movieKey = FavoritesOpenHelper.isFavorite(getContext().getContentResolver(), baseMovie.getTitle());
         if (movieKey != -1) {
-            URL url = NetworkUtils.makeDetailQuery(baseMovie.getId());
-            String response = NetworkUtils.getResponseFromURL(url);
-            Movie fullMovie = JSONUtils.parseMovieDetails(response, baseMovie);
+
+            ArrayList<Cursor> cursorList = FavoritesOpenHelper.fetchMovieFromKey(getContext().getContentResolver(), movieKey);
+            Movie fullMovie = CursorUtils.getMovieFromCursorList(cursorList);
+            if (fullMovie == null) {
+                return null;
+            }
             fullMovie.setFavorite(true);
             return fullMovie;
+
+//            URL url = NetworkUtils.makeDetailQuery(baseMovie.getId());
+//            String response = NetworkUtils.getResponseFromURL(url);
+//            Movie fullMovie = JSONUtils.parseMovieDetails(response, baseMovie);
+//            fullMovie.setFavorite(true);
+//            return fullMovie;
 
 //            ArrayList<Cursor> movieDataList = FavoritesOpenHelper.fetchMovieFromKey(getContext().getContentResolver(), movieKey);
 
