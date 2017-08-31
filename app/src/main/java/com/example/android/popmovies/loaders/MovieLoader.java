@@ -1,5 +1,6 @@
 package com.example.android.popmovies.loaders;
 
+import android.database.Cursor;
 import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.widget.Toast;
 
 import com.example.android.popmovies.R;
 import com.example.android.popmovies.data.Movie;
+import com.example.android.popmovies.database.FavoritesContract;
+import com.example.android.popmovies.utilities.CursorUtils;
 import com.example.android.popmovies.utilities.JSONUtils;
 import com.example.android.popmovies.utilities.NetworkUtils;
 
@@ -70,7 +73,8 @@ public class MovieLoader extends AsyncTaskLoader<ArrayList<Movie>> {
                 break;
 
             case FAVORITE_LOADER:
-                break;
+                Cursor movieEntry = getContext().getContentResolver().query(FavoritesContract.MovieEntry.ACCESS_URI, null, null, null, null);
+                return CursorUtils.getAllMoviesFromCursor(movieEntry);
             default:
                 return null;
         }
