@@ -76,7 +76,7 @@ public class FavoritesOpenHelper extends SQLiteOpenHelper{
         String mSelectionReview = FavoritesContract.ReviewEntry.COLUMN_ID_MOVIE + "=?";
         String mSelectionVideo = FavoritesContract.VideoEntry.COLUMN_ID_MOVIE + "=?";
         String[] mSelectionArgs = {Integer.toString(movieKey)};
-        ArrayList<Cursor> returnCursor = null;
+        ArrayList<Cursor> returnCursor = new ArrayList<Cursor>();
         returnCursor.add(contentResolver.query(FavoritesContract.MovieEntry.ACCESS_URI, null, mSelectionMovie, mSelectionArgs, null));
         returnCursor.add(contentResolver.query(FavoritesContract.ReviewEntry.ACCESS_URI, null, mSelectionReview, mSelectionArgs, null));
         returnCursor.add(contentResolver.query(FavoritesContract.VideoEntry.ACCESS_URI, null, mSelectionVideo, mSelectionArgs, null));
