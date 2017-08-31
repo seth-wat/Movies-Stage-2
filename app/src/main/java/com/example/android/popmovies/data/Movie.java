@@ -16,6 +16,9 @@ public class Movie {
     private String plotSynopsis;
     private double userRating;
     private String releaseDate;
+
+
+    private byte[] byteImage;
     private boolean favorite = false;
     private int id;
 
@@ -65,7 +68,9 @@ public class Movie {
         return favorite;
     }
 
-    public int getId() {return id;}
+    public int getId() {
+        return id;
+    }
 
     public ArrayList<Review> getReviews() {
         return reviews;
@@ -85,5 +90,13 @@ public class Movie {
 
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
+    }
+
+    public byte[] getByteImage() {
+        return byteImage;
+    }
+
+    public void setByteImage(byte[] byteImage) {
+        this.byteImage = byteImage;
     }
 }
