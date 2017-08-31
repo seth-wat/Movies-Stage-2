@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.AsyncTaskLoader;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Loader;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -34,23 +33,20 @@ import android.widget.Toast;
 
 
 public class FavoriteClickHandler implements View.OnClickListener {
-    private boolean isFavorited;
     private Movie movie;
     private ImageView mImage;
-    private Context context;
     private LoaderManager.LoaderCallbacks<Object> callbacks;
-    public static int sAddLoaderId = 107;
-    public static int sRemoveLoaderId = 109;
+    public static final int ADD_LOADER_ID = 107;
+    public static final int REMOVE_LOADER_iD = 109;
 
-    public FavoriteClickHandler(Movie movie, ImageView imageView, boolean isFavorited) {
+    public FavoriteClickHandler(Movie movie, ImageView imageView) {
         this.movie = movie;
         mImage = imageView;
-        this.isFavorited = isFavorited;
     }
 
     @Override
     public void onClick(final View v) {
-        if (isFavorited) {
+        if (movie.getFavorite()) {
             final Activity callingActivity = (Activity) v.getContext();
             callbacks =  new LoaderManager.LoaderCallbacks<Object>() {
 
@@ -83,10 +79,10 @@ public class FavoriteClickHandler implements View.OnClickListener {
                     }
                     FloatingActionButton fab = (FloatingActionButton) v;
                     fab.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                    isFavorited = false;
+                    movie.setFavorite(false);
                     Toast.makeText(v.getContext(), "Movie successfully removed from favorites database", Toast.LENGTH_SHORT).show();
-                    if (callingActivity.getLoaderManager().getLoader(sAddLoaderId) != null) {
-                        callingActivity.getLoaderManager().destroyLoader(sAddLoaderId);
+                    if (callingActivity.getLoaderManager().getLoader(ADD_LOADER_ID) != null) {
+                        callingActivity.getLoaderManager().destroyLoader(ADD_LOADER_ID);
                     }
 
 
@@ -112,9 +108,9 @@ public class FavoriteClickHandler implements View.OnClickListener {
             Bitmap bitmap = ((BitmapDrawable) mImage.getDrawable()).getBitmap();
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            byte[] imageBlob = outputStream.toByteArray();
+            byte[] imageInByte = outputStream.toByteArray();
 
-            movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_IMAGE, imageBlob);
+            movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_IMAGE, imageInByte);
 
             final Activity host = (Activity) v.getContext();
 
@@ -167,10 +163,10 @@ public class FavoriteClickHandler implements View.OnClickListener {
                     }
                     FloatingActionButton fab = (FloatingActionButton) v;
                     fab.setImageResource(R.drawable.ic_favorited_black_24dp);
-                    isFavorited = true;
+                    movie.setFavorite(true);
                     Toast.makeText(v.getContext(), "Inserted into favorites database", Toast.LENGTH_SHORT).show();
-                    if (host.getLoaderManager().getLoader(sRemoveLoaderId) != null) {
-                        host.getLoaderManager().destroyLoader(sRemoveLoaderId);
+                    if (host.getLoaderManager().getLoader(REMOVE_LOADER_iD) != null) {
+                        host.getLoaderManager().destroyLoader(REMOVE_LOADER_iD);
                     }
 
 
@@ -182,7 +178,7 @@ public class FavoriteClickHandler implements View.OnClickListener {
                 }
             };
 
-            host.getLoaderManager().initLoader(sAddLoaderId, null, callbacks);
+            host.getLoaderManager().initLoader(ADD_LOADER_ID, null, callbacks);
 
             //insert on the background thread, query for id, then insert the other two sections.
 
