@@ -38,6 +38,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     LinearLayoutManager reviewLayoutManager;
     ReviewClickHandler mReviewClickHandler;
     int reviewIndex;
+    boolean isFavorite;
 //    ReviewAdapter reviewAdapter;
 
     @Override
@@ -47,15 +48,18 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_detail);
         reviewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
-        if (savedInstanceState != null) {
-             reviewIndex = savedInstanceState.getInt("index");
-        }
 
         Intent mIntent = getIntent();
         myMovie = Parcels.unwrap(mIntent.getParcelableExtra("movieParcel"));
         if (myMovie != null) {
-            Toast.makeText(this, "The movie was passed and unwrapped successfully!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "The movie was passed and unwrapped successfully!", Toast.LENGTH_SHORT).show();
         }
+        if (savedInstanceState != null) {
+            reviewIndex = savedInstanceState.getInt("index");
+            isFavorite = savedInstanceState.getBoolean("isFavorite");
+            myMovie.setFavorite(isFavorite);
+        }
+
         mBinder.titleTextView.setText(myMovie.getTitle());
         mBinder.releaseDateTextView.setText(myMovie.getReleaseDate());
         mBinder.ratingTextView.setText(myMovie.getUserRating() + " / 10");
@@ -79,8 +83,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(Loader<Movie> loader, Movie data) {
         if (data != null) {
-            final ArrayList<Review> reviews = !myMovie.getReviews().isEmpty() ? myMovie.getReviews() : null;
-            final ArrayList<Video> videos = !myMovie.getVideos().isEmpty() ? myMovie.getVideos() : null;
+            final ArrayList<Review> reviews = !data.getReviews().isEmpty() ? data.getReviews() : null;
+            final ArrayList<Video> videos = !data.getVideos().isEmpty() ? data.getVideos() : null;
             if (! (videos == null)) {
                 mBinder.trailerRecyclerView.setLayoutManager(reviewLayoutManager);
                 mBinder.trailerRecyclerView.setAdapter(new TrailerAdapter(this, videos, this));
@@ -98,8 +102,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             }
             if (data.getFavorite()) {
                 mBinder.fab.setImageResource(R.drawable.ic_favorited_black_24dp);
+            } else {
+                mBinder.fab.setImageResource(R.drawable.ic_favorite_border_black_24dp);
             }
-            mBinder.fab.setOnClickListener(new FavoriteClickHandler(data, mBinder.dropImageView, data.getFavorite()));
+            mBinder.fab.setOnClickListener(new FavoriteClickHandler(data, mBinder.dropImageView));
+            Toast.makeText(this, "I set the on click listener on the fab", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -117,6 +124,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt("index", mReviewClickHandler.getIndex());
+        //The favorite state will be the same as when the activity was originally created so we must presist this.
+        outState.putBoolean("isFavorite", myMovie.getFavorite());
         super.onSaveInstanceState(outState);
     }
 }
