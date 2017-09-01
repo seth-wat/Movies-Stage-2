@@ -21,6 +21,7 @@ public class FavoritesContract {
 
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_IMAGE = "image";
+        public static final String COLUMN_DETAIL_IMAGE = "detail_image";
         public static final String COLUMN_RELEASE_DATE = "release_date";
         public static final String COLUMN_USER_RATING = "user_rating";
         public static final String COLUMN_SYNOPSIS = "synopsis";

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class FavoritesOpenHelper extends SQLiteOpenHelper{
 
     private static final String DATABASE_NAME = "favorites.db";
-    private static final int VERSION = 1;
+    private static final int VERSION = 3;
 
     public FavoritesOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
@@ -26,6 +26,7 @@ public class FavoritesOpenHelper extends SQLiteOpenHelper{
                 FavoritesContract.MovieEntry._ID + " INTEGER PRIMARY KEY, " +
                 FavoritesContract.MovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 FavoritesContract.MovieEntry.COLUMN_IMAGE + " BLOB NOT NULL, " +
+                FavoritesContract.MovieEntry.COLUMN_DETAIL_IMAGE + " BLOB NOT NULL, " +
                 FavoritesContract.MovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
                 FavoritesContract.MovieEntry.COLUMN_USER_RATING + " TEXT NOT NULL, " +
                 FavoritesContract.MovieEntry.COLUMN_SYNOPSIS + " TEXT NOT NULL);";
@@ -51,9 +52,10 @@ public class FavoritesOpenHelper extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS" + FavoritesContract.MOVE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS" + FavoritesContract.REVIEW_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS" + FavoritesContract.VIDEO_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + FavoritesContract.MOVE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + FavoritesContract.REVIEW_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + FavoritesContract.VIDEO_TABLE);
+        onCreate(db);
     }
 
     public static int isFavorite(ContentResolver contentResolver, String title) {
