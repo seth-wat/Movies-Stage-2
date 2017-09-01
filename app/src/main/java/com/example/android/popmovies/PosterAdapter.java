@@ -59,11 +59,12 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.ViewHolder
         }
 
         public void bind(final int position) {
-            if (mData.get(position).getByteImage() != null) {
-                    Bitmap image = BitmapFactory.decodeByteArray(mData.get(position).getByteImage(), 0, mData.get(position).getByteImage().length);
+            if (mData.get(position).getPosterByteImage() != null) {
+                    Bitmap image = BitmapFactory.decodeByteArray(mData.get(position).getPosterByteImage(), 0, mData.get(position).getPosterByteImage().length);
                     mImageView.setImageBitmap(image);
             } else {
                 Picasso.with(context).load(mData.get(position).getThumbnailPath()).into(mImageView);
+
             }
             mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
