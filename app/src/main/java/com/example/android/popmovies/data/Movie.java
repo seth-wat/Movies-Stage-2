@@ -11,14 +11,17 @@ import java.util.ArrayList;
 @Parcel
 public class Movie {
     private String title;
+
+
     private String thumbnailPath;
-    private String detailImagePath;
+    private String backDropPath;
     private String plotSynopsis;
     private double userRating;
     private String releaseDate;
+    private byte[] detailByteImage;
+    private byte[] posterByteImage;
 
 
-    private byte[] byteImage;
     private boolean favorite = false;
     private int id;
 
@@ -31,7 +34,6 @@ public class Movie {
         this.title = title;
         if (thumbnailPath != null) {
             this.thumbnailPath = "https://image.tmdb.org/t/p/w342" + thumbnailPath;
-            this.detailImagePath = "https://image.tmdb.org/t/p/w780" + thumbnailPath;
         }
         this.plotSynopsis = plotSynopsis;
         this.userRating = userRating;
@@ -46,10 +48,6 @@ public class Movie {
 
     public String getThumbnailPath() {
         return thumbnailPath;
-    }
-
-    public String getDetailImagePath() {
-        return detailImagePath;
     }
 
     public String getPlotSynopsis() {
@@ -92,11 +90,33 @@ public class Movie {
         this.favorite = favorite;
     }
 
-    public byte[] getByteImage() {
-        return byteImage;
+    public byte[] getPosterByteImage() {
+        return posterByteImage;
     }
 
-    public void setByteImage(byte[] byteImage) {
-        this.byteImage = byteImage;
+    public void setPosterByteImage(byte[] posterByteImage) {
+        this.posterByteImage = posterByteImage;
     }
+
+
+    public void setThumbnailPath(String thumbnailPath) {
+        this.thumbnailPath = thumbnailPath;
+    }
+
+    public byte[] getDetailByteImage() {
+        return detailByteImage;
+    }
+
+    public void setDetailByteImage(byte[] detailByteImage) {
+        this.detailByteImage = detailByteImage;
+    }
+
+    public String getBackDropPath() {
+        return backDropPath;
+    }
+
+    public void setBackDropPath(String backDropPath) {
+        this.backDropPath = backDropPath;
+    }
+
 }
