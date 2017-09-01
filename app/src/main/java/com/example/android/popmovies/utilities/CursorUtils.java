@@ -28,13 +28,15 @@ public class CursorUtils {
             movieEntry.moveToFirst();
             String title = movieEntry.getString(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_TITLE));
             byte[] imageByte = movieEntry.getBlob(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_IMAGE));
+            byte[] detailImageByte = movieEntry.getBlob(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_DETAIL_IMAGE));
             String plotSynopsis = movieEntry.getString(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_RELEASE_DATE));
             double userRating = movieEntry.getDouble(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_USER_RATING));
             String releaseDate = movieEntry.getString(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_RELEASE_DATE));
             int id = 0;
 
             movie = new Movie(title, null, plotSynopsis, userRating, releaseDate, id);
-            movie.setByteImage(imageByte);
+            movie.setDetailByteImage(detailImageByte);
+            movie.setPosterByteImage(imageByte);
         }
 
         ArrayList<Review> reviews = new ArrayList<Review>();
@@ -87,25 +89,29 @@ public class CursorUtils {
 
             String title = movieEntry.getString(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_TITLE));
             byte[] imageByte = movieEntry.getBlob(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_IMAGE));
+            byte[] detailImageByte = movieEntry.getBlob(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_DETAIL_IMAGE));
             String plotSynopsis = movieEntry.getString(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_RELEASE_DATE));
             double userRating = movieEntry.getDouble(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_USER_RATING));
             String releaseDate = movieEntry.getString(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_RELEASE_DATE));
             int id = 0;
 
             Movie movie = new Movie(title, null, plotSynopsis, userRating, releaseDate, id);
-            movie.setByteImage(imageByte);
+            movie.setPosterByteImage(imageByte);
+            movie.setDetailByteImage(detailImageByte);
             movies.add(movie);
 
             while (movieEntry.moveToNext()) {
                 title = movieEntry.getString(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_TITLE));
                 imageByte = movieEntry.getBlob(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_IMAGE));
+                detailImageByte = movieEntry.getBlob(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_DETAIL_IMAGE));
                 plotSynopsis = movieEntry.getString(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_RELEASE_DATE));
                 userRating = movieEntry.getDouble(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_USER_RATING));
                 releaseDate = movieEntry.getString(movieEntry.getColumnIndex(FavoritesContract.MovieEntry.COLUMN_RELEASE_DATE));
                 id = 0;
 
                 movie = new Movie(title, null, plotSynopsis, userRating, releaseDate, id);
-                movie.setByteImage(imageByte);
+                movie.setPosterByteImage(imageByte);
+                movie.setDetailByteImage(detailImageByte);
                 movies.add(movie);
             }
             movieEntry.close();
