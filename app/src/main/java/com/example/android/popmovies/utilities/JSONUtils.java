@@ -29,13 +29,15 @@ public final class JSONUtils {
             if (results != null) {
                 for (int i = 0; i < results.length(); i++) {
                     singleMovie = results.getJSONObject(i);
-                    listOfMovies.add(new Movie(singleMovie
+                    Movie m = new Movie(singleMovie
                             .getString("title"), singleMovie
                             .getString("poster_path"), singleMovie
                             .getString("overview"), singleMovie
                             .getDouble("vote_average"), singleMovie
                             .getString("release_date"), singleMovie
-                            .getInt("id")));
+                            .getInt("id"));
+                    m.setBackDropPath("https://image.tmdb.org/t/p/w780" + singleMovie.getString("backdrop_path"));
+                    listOfMovies.add(m);
                 }
                 return listOfMovies;
             }
