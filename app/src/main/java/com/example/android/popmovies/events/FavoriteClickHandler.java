@@ -6,7 +6,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Loader;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -19,6 +19,8 @@ import com.example.android.popmovies.data.Review;
 import com.example.android.popmovies.data.Video;
 import com.example.android.popmovies.database.FavoritesContract;
 import com.example.android.popmovies.database.FavoritesOpenHelper;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -98,19 +100,61 @@ public class FavoriteClickHandler implements View.OnClickListener {
 
 
         } else {
-            if (mImage == null) return;
             final ContentValues movieContentValues = new ContentValues();
             movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
             movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
             movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_USER_RATING, movie.getUserRating());
             movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_SYNOPSIS, movie.getPlotSynopsis());
 
-            Bitmap bitmap = ((BitmapDrawable) mImage.getDrawable()).getBitmap();
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            byte[] imageInByte = outputStream.toByteArray();
+//            Bitmap bitmap = null;
+//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+//            byte[] imageInByte = outputStream.toByteArray();
 
-            movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_IMAGE, imageInByte);
+            Target target = new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    byte[] imageInByte = outputStream.toByteArray();
+                    movie.setPosterByteImage(imageInByte);
+                }
+
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+                }
+            };
+            Picasso.with(v.getContext()).load(movie.getThumbnailPath()).into(target);
+
+            movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_IMAGE, movie.getPosterByteImage());
+
+            target = new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    byte[] imageInByte = outputStream.toByteArray();
+                    movie.setDetailByteImage(imageInByte);
+                }
+
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+                }
+            };
+            Picasso.with(v.getContext()).load(movie.getBackDropPath()).into(target);
+            movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_DETAIL_IMAGE, movie.getDetailByteImage());
+
+
 
             final Activity host = (Activity) v.getContext();
 
