@@ -2,18 +2,13 @@ package com.example.android.popmovies;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.popmovies.data.Movie;
@@ -28,8 +23,6 @@ import com.squareup.picasso.Picasso;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-
-import static android.view.MotionEvent.ACTION_SCROLL;
 
 public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Movie> {
 
@@ -63,10 +56,28 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         mBinder.titleTextView.setText(myMovie.getTitle());
         mBinder.releaseDateTextView.setText(myMovie.getReleaseDate());
         mBinder.ratingTextView.setText(myMovie.getUserRating() + " / 10");
+        if (myMovie.getDetailByteImage() != null) {
+            Bitmap image = BitmapFactory.decodeByteArray(myMovie.getDetailByteImage(), 0, myMovie.getDetailByteImage().length);
+            mBinder.dropImageView.setImageBitmap(image);
+        } else {
+            //Somehow between PosterAdapter and here a duplicate String is added on to the end of
+            //the thumbnail path. How? I don't know, the method setThumbnailPath didn't even exist
+            //until I created it for this hack. It was only settable through the constructor.
+            // The string value was perfectly valid when it was bound in PosterActivity retrieved
+            // from the same Movie reference that was passed into this Activity
+            // This code is important for adding the image to the favorites db.
+
+            StringBuilder whatAHack = new StringBuilder(myMovie.getThumbnailPath());
+            whatAHack = whatAHack.delete(0, whatAHack.indexOf("2htt") + 1);
+            myMovie.setThumbnailPath(whatAHack.toString());
+
+            //end hack
+
+            Picasso.with(this).load(myMovie.getBackDropPath()).into(mBinder.dropImageView);
+        }
         mBinder.durationTextView.setText("120 min");
 
         mBinder.synopsisTextView.setText(myMovie.getPlotSynopsis());
-        Picasso.with(this).load(myMovie.getDetailImagePath()).into(mBinder.dropImageView);
         getSupportLoaderManager().initLoader(123, null, this);
 
 
@@ -123,7 +134,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("index", mReviewClickHandler.getIndex());
+        if (mReviewClickHandler != null) {
+            outState.putInt("index", mReviewClickHandler.getIndex());
+        }
         //The favorite state will be the same as when the activity was originally created so we must presist this.
         outState.putBoolean("isFavorite", myMovie.getFavorite());
         super.onSaveInstanceState(outState);
