@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <resources>
     <string name="app_name">Movies</string>
     <string name="error_msg">There was a problem loading content, please check your internet connection.</string>
@@ -10,4 +11,8 @@
     <string name="no_favorite_message">There are no favorite movies in your library, add some!</string>
     <string name="review_header">Reviews</string>
     <string name="trailer_header">Movie Trailers</string>
+    <string name="review_error">"No reviews found.</string>
+    <string name="trailer_error">"No trailers found.</string>
+    <string name="review_button_next">NEXT REVIEW</string>
+    <string name="review_button_previous">PREVIOUS REVIEW</string>
 </resources>
