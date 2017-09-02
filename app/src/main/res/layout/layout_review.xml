@@ -10,35 +10,43 @@
             android:id="@+id/user_name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:fontFamily="sans-serif-medium"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="-90dp"
             android:text="TextView"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent" />
         <TextView
             android:id="@+id/synopsis_frame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_marginRight="8dp"
+            android:textSize="16sp"
             android:text="TextView"
-            app:layout_constraintLeft_toLeftOf="@+id/user_name_text_view"
-            app:layout_constraintTop_toBottomOf="@+id/user_name_text_view" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_name_text_view"
+            android:layout_marginLeft="8dp" />
 
         <Button
             android:id="@+id/button_previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Previous Review"
-            tools:layout_editor_absoluteY="0dp"
+            android:text="Previous Review"
             app:layout_constraintTop_toBottomOf="@+id/synopsis_frame"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="@+id/synopsis_frame" />
         <Button
             android:id="@+id/button_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Next Review"
-            tools:layout_editor_absoluteY="0dp"
+            android:text="Next Review"
+            android:layout_marginRight="8dp"
             app:layout_constraintTop_toBottomOf="@+id/synopsis_frame"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="@+id/synopsis_frame" />
     </android.support.constraint.ConstraintLayout>
 </layout>
