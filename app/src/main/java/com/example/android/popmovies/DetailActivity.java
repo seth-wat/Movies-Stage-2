@@ -31,8 +31,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     LinearLayoutManager reviewLayoutManager;
     ReviewClickHandler mReviewClickHandler;
     int reviewIndex;
-    boolean isFavorite;
-//    ReviewAdapter reviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +47,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         }
         if (savedInstanceState != null) {
             reviewIndex = savedInstanceState.getInt("index");
-            isFavorite = savedInstanceState.getBoolean("isFavorite");
-            myMovie.setFavorite(isFavorite);
         }
 
         mBinder.titleTextView.setText(myMovie.getTitle());
@@ -111,6 +107,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 mBinder.reviewInclude.buttonNext.setOnClickListener(mReviewClickHandler);
                 mBinder.reviewInclude.buttonPrevious.setOnClickListener(mReviewClickHandler);
             }
+            Toast.makeText(this, "I am: " + data.getFavorite(), Toast.LENGTH_LONG).show();
             if (data.getFavorite()) {
                 mBinder.fab.setImageResource(R.drawable.ic_favorited_black_24dp);
             } else {
@@ -137,8 +134,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if (mReviewClickHandler != null) {
             outState.putInt("index", mReviewClickHandler.getIndex());
         }
-        //The favorite state will be the same as when the activity was originally created so we must presist this.
-        outState.putBoolean("isFavorite", myMovie.getFavorite());
+
         super.onSaveInstanceState(outState);
     }
 }
