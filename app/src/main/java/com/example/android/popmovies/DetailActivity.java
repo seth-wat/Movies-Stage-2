@@ -116,7 +116,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             } else {
                 mBinder.fab.setImageResource(R.drawable.ic_favorite_border_black_24dp);
             }
-            mBinder.fab.setOnClickListener(new FavoriteClickHandler(data, mBinder.dropImageView));
+            mBinder.fab.setOnClickListener(new FavoriteClickHandler(data));
             Toast.makeText(this, "I set the on click listener on the fab", Toast.LENGTH_LONG).show();
         }
     }
