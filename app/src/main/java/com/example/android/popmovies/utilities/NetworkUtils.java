@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.example.android.popmovies.data.ApiKey;
+import com.example.android.popmovies.BuildConfig;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,8 +23,8 @@ public final class NetworkUtils {
     private static final String LOG_TAG = NetworkUtils.class.getSimpleName();
 
     public static final String BASE_QUERY = "https://api.themoviedb.org/3/movie";
-    public static final String MOST_POPULAR_QUERY = BASE_QUERY + "/popular?page=1&language=en-US&api_key=" + ApiKey.API_KEY;
-    public static final String HIGHEST_RATED_QUERY = BASE_QUERY + "/top_rated?page=1&language=en-US&api_key=" + ApiKey.API_KEY;
+    public static final String MOST_POPULAR_QUERY = BASE_QUERY + "/popular?page=1&language=en-US&api_key=" + BuildConfig.MOVIE_DB_API_KEY;
+    public static final String HIGHEST_RATED_QUERY = BASE_QUERY + "/top_rated?page=1&language=en-US&api_key=" + BuildConfig.MOVIE_DB_API_KEY;
     public static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
 
 
@@ -67,7 +67,7 @@ public final class NetworkUtils {
     }
 
     public static URL makeDetailQuery(int id) {
-        return urlFromString(BASE_QUERY + "/" + id + "?api_key=" + ApiKey.API_KEY + "&append_to_response=videos,reviews");
+        return urlFromString(BASE_QUERY + "/" + id + "?api_key=" + BuildConfig.MOVIE_DB_API_KEY + "&append_to_response=videos,reviews");
     }
 
 }
