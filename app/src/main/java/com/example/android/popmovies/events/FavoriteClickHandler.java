@@ -125,6 +125,20 @@ public class FavoriteClickHandler implements View.OnClickListener {
                 public void onPrepareLoad(Drawable placeHolderDrawable) {
                 }
             };
+
+
+            //Somehow between PosterAdapter and here a duplicate String is added on to the end of
+            //the thumbnail path. How? I don't know, the method setThumbnailPath didn't even exist
+            //until I created it for this hack. It was only settable through the constructor.
+            // The string value was perfectly valid when it was bound in PosterActivity retrieved
+            // from the same Movie reference that was passed into this Activity
+            // This code is important for adding the image to the favorites db.
+            StringBuilder whatAHack = new StringBuilder(movie.getThumbnailPath());
+            whatAHack = whatAHack.delete(0, whatAHack.indexOf("2htt") + 1);
+            movie.setThumbnailPath(whatAHack.toString());
+            //end hack
+
+
             Picasso.with(v.getContext()).load(movie.getThumbnailPath()).into(target);
 
             movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_IMAGE, movie.getPosterByteImage());

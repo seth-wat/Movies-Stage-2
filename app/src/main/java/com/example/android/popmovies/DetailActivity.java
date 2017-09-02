@@ -55,23 +55,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         mBinder.titleTextView.setText(myMovie.getTitle());
         mBinder.releaseDateTextView.setText(myMovie.getReleaseDate());
         mBinder.ratingTextView.setText(myMovie.getUserRating() + " / 10");
+
         if (myMovie.getDetailByteImage() != null) {
             Bitmap image = BitmapFactory.decodeByteArray(myMovie.getDetailByteImage(), 0, myMovie.getDetailByteImage().length);
             mBinder.dropImageView.setImageBitmap(image);
         } else {
-            //Somehow between PosterAdapter and here a duplicate String is added on to the end of
-            //the thumbnail path. How? I don't know, the method setThumbnailPath didn't even exist
-            //until I created it for this hack. It was only settable through the constructor.
-            // The string value was perfectly valid when it was bound in PosterActivity retrieved
-            // from the same Movie reference that was passed into this Activity
-            // This code is important for adding the image to the favorites db.
-
-            StringBuilder whatAHack = new StringBuilder(myMovie.getThumbnailPath());
-            whatAHack = whatAHack.delete(0, whatAHack.indexOf("2htt") + 1);
-            myMovie.setThumbnailPath(whatAHack.toString());
-
-            //end hack
-
             Picasso.with(this).load(myMovie.getBackDropPath()).into(mBinder.dropImageView);
         }
         mBinder.durationTextView.setText("120 min");
