@@ -36,14 +36,12 @@ import android.widget.Toast;
 
 public class FavoriteClickHandler implements View.OnClickListener {
     private Movie movie;
-    private ImageView mImage;
     private LoaderManager.LoaderCallbacks<Object> callbacks;
     public static final int ADD_LOADER_ID = 107;
     public static final int REMOVE_LOADER_iD = 109;
 
-    public FavoriteClickHandler(Movie movie, ImageView imageView) {
+    public FavoriteClickHandler(Movie movie) {
         this.movie = movie;
-        mImage = imageView;
     }
 
     @Override
@@ -66,7 +64,6 @@ public class FavoriteClickHandler implements View.OnClickListener {
                             int databaseMovieId = FavoritesOpenHelper.isFavorite(contentResolver, movie.getTitle());
                             if (databaseMovieId != -1) {
                                 int numRowsDeleted = contentResolver.delete(FavoritesContract.DELETE_URI, FavoritesContract.MovieEntry._ID + "=?", new String[]{Integer.toString(databaseMovieId)});
-                                Log.e("CSDFSDFSD", "====================================" + numRowsDeleted);
                                 return true;
                             }
                             return false;
@@ -156,7 +153,7 @@ public class FavoriteClickHandler implements View.OnClickListener {
 
 
 
-            final Activity host = (Activity) v.getContext();
+            final Activity callingActivity = (Activity) v.getContext();
 
             callbacks =  new LoaderManager.LoaderCallbacks<Object>() {
 
@@ -209,8 +206,8 @@ public class FavoriteClickHandler implements View.OnClickListener {
                     fab.setImageResource(R.drawable.ic_favorited_black_24dp);
                     movie.setFavorite(true);
                     Toast.makeText(v.getContext(), "Inserted into favorites database", Toast.LENGTH_SHORT).show();
-                    if (host.getLoaderManager().getLoader(REMOVE_LOADER_iD) != null) {
-                        host.getLoaderManager().destroyLoader(REMOVE_LOADER_iD);
+                    if (callingActivity.getLoaderManager().getLoader(REMOVE_LOADER_iD) != null) {
+                        callingActivity.getLoaderManager().destroyLoader(REMOVE_LOADER_iD);
                     }
 
 
@@ -222,7 +219,7 @@ public class FavoriteClickHandler implements View.OnClickListener {
                 }
             };
 
-            host.getLoaderManager().initLoader(ADD_LOADER_ID, null, callbacks);
+            callingActivity.getLoaderManager().initLoader(ADD_LOADER_ID, null, callbacks);
 
             //insert on the background thread, query for id, then insert the other two sections.
 
