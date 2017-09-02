@@ -9,6 +9,8 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.popmovies.data.Movie;
@@ -18,6 +20,8 @@ import com.example.android.popmovies.databinding.ActivityDetailBinding;
 import com.example.android.popmovies.events.FavoriteClickHandler;
 import com.example.android.popmovies.events.ReviewClickHandler;
 import com.example.android.popmovies.loaders.DetailLoader;
+import com.example.android.popmovies.loaders.MovieLoader;
+import com.example.android.popmovies.utilities.ErrorDisplayUtils;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -43,7 +47,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         Intent mIntent = getIntent();
         myMovie = Parcels.unwrap(mIntent.getParcelableExtra("movieParcel"));
         if (myMovie != null) {
-            Toast.makeText(this, "The movie was passed and unwrapped successfully!", Toast.LENGTH_SHORT).show();
         }
         if (savedInstanceState != null) {
             reviewIndex = savedInstanceState.getInt("index");
@@ -92,31 +95,38 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if (data != null) {
             final ArrayList<Review> reviews = !data.getReviews().isEmpty() ? data.getReviews() : null;
             final ArrayList<Video> videos = !data.getVideos().isEmpty() ? data.getVideos() : null;
+
             if (! (videos == null)) {
+                ErrorDisplayUtils.hideReviewError(mBinder);
                 mBinder.trailerRecyclerView.setLayoutManager(reviewLayoutManager);
                 mBinder.trailerRecyclerView.setAdapter(new TrailerAdapter(this, videos, this));
-
+            } else {
+                ErrorDisplayUtils.showTrailerError(mBinder);
             }
 
             if (! (reviews == null)) {
+                ErrorDisplayUtils.hideReviewError(mBinder);
+
                 mBinder.reviewInclude.synopsisFrame.setText(reviews.get(reviewIndex).getContent());
                 mBinder.reviewInclude.userNameTextView.setText(reviews.get(reviewIndex).getAuthor());
                 mReviewClickHandler = new ReviewClickHandler(reviews, reviewIndex, mBinder.reviewInclude.userNameTextView, mBinder.reviewInclude.synopsisFrame,
                         mBinder.reviewInclude.buttonNext, mBinder.reviewInclude.buttonPrevious);
-
                 mBinder.reviewInclude.buttonNext.setOnClickListener(mReviewClickHandler);
                 mBinder.reviewInclude.buttonPrevious.setOnClickListener(mReviewClickHandler);
+            } else {
+                ErrorDisplayUtils.showReviewError(mBinder);
             }
-            Toast.makeText(this, "I am: " + data.getFavorite(), Toast.LENGTH_LONG).show();
+
             if (data.getFavorite()) {
                 mBinder.fab.setImageResource(R.drawable.ic_favorited_black_24dp);
             } else {
                 mBinder.fab.setImageResource(R.drawable.ic_favorite_border_black_24dp);
             }
+
             mBinder.fab.setOnClickListener(new FavoriteClickHandler(data));
-            Toast.makeText(this, "I set the on click listener on the fab", Toast.LENGTH_LONG).show();
         }
     }
+
 
     @Override
     public void onLoaderReset(Loader<Movie> loader) {
