@@ -1,5 +1,6 @@
 package com.example.android.popmovies.events;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,22 +40,28 @@ public class ReviewClickHandler implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.button_next) {
             if (index + 1 >= reviews.size()) {
-                nextButton.setText("");
+                nextButton.setTextColor(Color.parseColor("#FF0000"));
                 return;
             }
             index++;
-            nextButton.setText("Next Review");
+            nextButton.setTextColor(Color.parseColor("#000000"));
+            if (!(index - 1 < 0)) {
+                prevButton.setTextColor(Color.parseColor("#000000"));
+            }
             Review review = reviews.get(index);
             authorTextView.setText(review.getAuthor());
             contentTextView.setText(review.getContent());
 
         } else if (v.getId() == R.id.button_previous) {
             if (index - 1 < 0) {
-                prevButton.setText("");
+                prevButton.setTextColor(Color.parseColor("#FF0000"));
                 return;
             }
             index--;
-            prevButton.setText("Previous Review");
+            prevButton.setTextColor(Color.parseColor("#000000"));
+            if (!(index + 1 >= reviews.size())) {
+                nextButton.setTextColor(Color.parseColor("#000000"));
+            }
             Review review = reviews.get(index);
             authorTextView.setText(review.getAuthor());
             contentTextView.setText(review.getContent());
