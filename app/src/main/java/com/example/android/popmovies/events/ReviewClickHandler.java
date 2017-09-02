@@ -32,6 +32,11 @@ public class ReviewClickHandler implements View.OnClickListener {
         this.nextButton = nextButton;
         this.prevButton = prevButton;
 
+        if (reviews.size() < 2) {
+            nextButton.setEnabled(false);
+            prevButton.setEnabled(false);
+        }
+
     }
 
 
@@ -40,13 +45,12 @@ public class ReviewClickHandler implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.button_next) {
             if (index + 1 >= reviews.size()) {
-                nextButton.setTextColor(Color.parseColor("#FF0000"));
+                nextButton.setEnabled(false);
                 return;
             }
             index++;
-            nextButton.setTextColor(Color.parseColor("#000000"));
             if (!(index - 1 < 0)) {
-                prevButton.setTextColor(Color.parseColor("#000000"));
+                prevButton.setEnabled(true);
             }
             Review review = reviews.get(index);
             authorTextView.setText(review.getAuthor());
@@ -54,13 +58,12 @@ public class ReviewClickHandler implements View.OnClickListener {
 
         } else if (v.getId() == R.id.button_previous) {
             if (index - 1 < 0) {
-                prevButton.setTextColor(Color.parseColor("#FF0000"));
+                prevButton.setEnabled(false);
                 return;
             }
             index--;
-            prevButton.setTextColor(Color.parseColor("#000000"));
             if (!(index + 1 >= reviews.size())) {
-                nextButton.setTextColor(Color.parseColor("#000000"));
+                nextButton.setEnabled(true);
             }
             Review review = reviews.get(index);
             authorTextView.setText(review.getAuthor());
