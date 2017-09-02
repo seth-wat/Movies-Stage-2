@@ -79,7 +79,6 @@ public class FavoriteClickHandler implements View.OnClickListener {
                     FloatingActionButton fab = (FloatingActionButton) v;
                     fab.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                     movie.setFavorite(false);
-                    Toast.makeText(v.getContext(), "Movie successfully removed from favorites database", Toast.LENGTH_SHORT).show();
                     if (callingActivity.getLoaderManager().getLoader(ADD_LOADER_ID) != null) {
                         callingActivity.getLoaderManager().destroyLoader(ADD_LOADER_ID);
                     }
@@ -205,7 +204,6 @@ public class FavoriteClickHandler implements View.OnClickListener {
                     FloatingActionButton fab = (FloatingActionButton) v;
                     fab.setImageResource(R.drawable.ic_favorited_black_24dp);
                     movie.setFavorite(true);
-                    Toast.makeText(v.getContext(), "Inserted into favorites database", Toast.LENGTH_SHORT).show();
                     if (callingActivity.getLoaderManager().getLoader(REMOVE_LOADER_iD) != null) {
                         callingActivity.getLoaderManager().destroyLoader(REMOVE_LOADER_iD);
                     }
