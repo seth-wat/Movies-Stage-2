@@ -18,7 +18,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 /**
- * Created by God on 8/29/2017.
+ *
  */
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHolder>{
@@ -40,7 +40,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.name.setText(videos.get(position).getName());
-        holder.name.setOnClickListener(new TrailerClickHandler(NetworkUtils.YOUTUBE_BASE_URL + videos.get(position).getKey(), activity));
+        holder.itemView.setOnClickListener(new TrailerClickHandler(NetworkUtils.YOUTUBE_BASE_URL + videos.get(position).getKey(), activity));
     }
 
     @Override
