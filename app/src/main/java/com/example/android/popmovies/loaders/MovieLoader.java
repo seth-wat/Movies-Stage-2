@@ -4,11 +4,9 @@ import android.database.Cursor;
 import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.popmovies.R;
 import com.example.android.popmovies.data.Movie;
 import com.example.android.popmovies.database.FavoritesContract;
 import com.example.android.popmovies.utilities.CursorUtils;
@@ -44,7 +42,7 @@ public class MovieLoader extends AsyncTaskLoader<ArrayList<Movie>> {
 
     @Override
     protected void onStartLoading() {
-            forceLoad();
+        forceLoad();
     }
 
     @Override

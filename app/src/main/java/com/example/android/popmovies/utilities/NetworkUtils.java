@@ -22,7 +22,6 @@ import java.nio.charset.Charset;
 public final class NetworkUtils {
     private static final String LOG_TAG = NetworkUtils.class.getSimpleName();
 
-    //Only returns results with at least 100 users votes, other wise data set is full of obscure movies.
     public static final String BASE_QUERY = "https://api.themoviedb.org/3/movie";
     public static final String MOST_POPULAR_QUERY = BASE_QUERY + "/popular?page=1&language=en-US&api_key=" + ApiKey.API_KEY;
     public static final String HIGHEST_RATED_QUERY = BASE_QUERY + "/top_rated?page=1&language=en-US&api_key=" + ApiKey.API_KEY;

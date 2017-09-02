@@ -9,11 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.popmovies.data.Video;
-import com.example.android.popmovies.databinding.ActivityDetailBinding;
 import com.example.android.popmovies.events.TrailerClickHandler;
 import com.example.android.popmovies.utilities.NetworkUtils;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -21,7 +19,7 @@ import java.util.ArrayList;
  *
  */
 
-public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHolder>{
+public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHolder> {
     private ArrayList<Video> videos;
     private LayoutInflater layoutInflater;
     private Activity activity;
@@ -31,6 +29,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
         this.layoutInflater = LayoutInflater.from(context);
         this.activity = activity;
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.layout_trailer, parent, false);
@@ -50,6 +49,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
+
         public ViewHolder(View v) {
             super(v);
             name = (TextView) v.findViewById(R.id.trailer_name_text_view);

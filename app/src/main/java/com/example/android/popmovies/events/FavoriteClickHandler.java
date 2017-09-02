@@ -9,9 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.example.android.popmovies.R;
 import com.example.android.popmovies.data.Movie;
@@ -26,12 +24,10 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import android.app.LoaderManager;
-import android.widget.Toast;
 
 /**
  * Click handler for the favorites fab. Adds / removes from favorites db.
  */
-
 
 
 public class FavoriteClickHandler implements View.OnClickListener {
@@ -48,7 +44,7 @@ public class FavoriteClickHandler implements View.OnClickListener {
     public void onClick(final View v) {
         if (movie.getFavorite()) {
             final Activity callingActivity = (Activity) v.getContext();
-            callbacks =  new LoaderManager.LoaderCallbacks<Object>() {
+            callbacks = new LoaderManager.LoaderCallbacks<Object>() {
 
                 @Override
                 public Loader<Object> onCreateLoader(final int id, Bundle args) {
@@ -58,12 +54,12 @@ public class FavoriteClickHandler implements View.OnClickListener {
                         protected void onStartLoading() {
                             forceLoad();
                         }
+
                         @Override
                         public Boolean loadInBackground() {
                             ContentResolver contentResolver = getContext().getContentResolver();
                             int databaseMovieId = FavoritesOpenHelper.isFavorite(contentResolver, movie.getTitle());
                             if (databaseMovieId != -1) {
-                                int numRowsDeleted = contentResolver.delete(FavoritesContract.DELETE_URI, FavoritesContract.MovieEntry._ID + "=?", new String[]{Integer.toString(databaseMovieId)});
                                 return true;
                             }
                             return false;
@@ -101,11 +97,6 @@ public class FavoriteClickHandler implements View.OnClickListener {
             movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
             movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_USER_RATING, movie.getUserRating());
             movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_SYNOPSIS, movie.getPlotSynopsis());
-
-//            Bitmap bitmap = null;
-//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-//            byte[] imageInByte = outputStream.toByteArray();
 
             Target target = new Target() {
                 @Override
@@ -165,10 +156,9 @@ public class FavoriteClickHandler implements View.OnClickListener {
             movieContentValues.put(FavoritesContract.MovieEntry.COLUMN_DETAIL_IMAGE, movie.getDetailByteImage());
 
 
-
             final Activity callingActivity = (Activity) v.getContext();
 
-            callbacks =  new LoaderManager.LoaderCallbacks<Object>() {
+            callbacks = new LoaderManager.LoaderCallbacks<Object>() {
 
 
                 @Override
@@ -179,6 +169,7 @@ public class FavoriteClickHandler implements View.OnClickListener {
                         protected void onStartLoading() {
                             forceLoad();
                         }
+
                         @Override
                         public Boolean loadInBackground() {
                             ContentResolver contentResolver = getContext().getContentResolver();
@@ -233,13 +224,10 @@ public class FavoriteClickHandler implements View.OnClickListener {
 
             callingActivity.getLoaderManager().initLoader(ADD_LOADER_ID, null, callbacks);
 
-            //insert on the background thread, query for id, then insert the other two sections.
-
-            }
-
-
         }
 
+
+    }
 
 
 }

@@ -11,7 +11,7 @@ import com.example.android.popmovies.data.Movie;
 import java.util.ArrayList;
 
 
-public class FavoritesOpenHelper extends SQLiteOpenHelper{
+public class FavoritesOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "favorites.db";
     private static final int VERSION = 3;
@@ -43,7 +43,7 @@ public class FavoritesOpenHelper extends SQLiteOpenHelper{
                 FavoritesContract.VideoEntry.COLUMN_NAME + " TEXT NOT NULL, " +
                 FavoritesContract.VideoEntry.COLUMN_KEY + " TEXT NOT NULL, " +
                 "FOREIGN KEY (" + FavoritesContract.VideoEntry.COLUMN_ID_MOVIE + ") REFERENCES " +
-                FavoritesContract.MOVE_TABLE + " (" + FavoritesContract.MovieEntry._ID  + "));";
+                FavoritesContract.MOVE_TABLE + " (" + FavoritesContract.MovieEntry._ID + "));";
 
         db.execSQL(createMovies);
         db.execSQL(createReviews);
@@ -85,7 +85,4 @@ public class FavoritesOpenHelper extends SQLiteOpenHelper{
         return returnCursor;
     }
 
-    public static Cursor fetchMoviesFromFavorites(ContentResolver contentResolver) {
-        return null;
-    }
 }

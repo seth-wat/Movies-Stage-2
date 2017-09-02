@@ -1,16 +1,13 @@
 package com.example.android.popmovies;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,12 +17,10 @@ import android.widget.Toast;
 
 import com.example.android.popmovies.data.Movie;
 import com.example.android.popmovies.loaders.MovieLoader;
-import com.example.android.popmovies.utilities.JSONUtils;
 import com.example.android.popmovies.utilities.NetworkUtils;
 
 import org.parceler.Parcels;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 public class PosterActivity extends AppCompatActivity implements PosterAdapter.ItemClickListener, LoaderManager.LoaderCallbacks<ArrayList<Movie>> {
@@ -144,9 +139,11 @@ public class PosterActivity extends AppCompatActivity implements PosterAdapter.I
 
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
         errorToast.cancel();
     }
+
 }

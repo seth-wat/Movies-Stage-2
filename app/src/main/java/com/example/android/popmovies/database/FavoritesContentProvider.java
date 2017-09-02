@@ -3,15 +3,12 @@ package com.example.android.popmovies.database;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import com.example.android.popmovies.data.Movie;
 
 public class FavoritesContentProvider extends ContentProvider {
 
@@ -46,7 +43,7 @@ public class FavoritesContentProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
         Cursor returnCursor = null;
-        switch(sMatcher.match(uri)) {
+        switch (sMatcher.match(uri)) {
             case URI_MOVIE_MATCH_ID:
                 returnCursor = db.query(FavoritesContract.MOVE_TABLE, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
@@ -75,9 +72,9 @@ public class FavoritesContentProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         long row = -1;
         Uri uriToReturn;
-        switch(sMatcher.match(uri)) {
+        switch (sMatcher.match(uri)) {
             case URI_MOVIE_MATCH_ID:
-                row = db.insert(FavoritesContract.MOVE_TABLE, null,  values);
+                row = db.insert(FavoritesContract.MOVE_TABLE, null, values);
                 if (row != -1) {
                     uriToReturn = ContentUris.withAppendedId(FavoritesContract.MovieEntry.ACCESS_URI, row);
                 } else {
@@ -119,7 +116,7 @@ public class FavoritesContentProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
             return reviewRowsDeleted + dbRowsDeleted + movieRowsDeleted;
         } else {
-                throw new UnsupportedOperationException("Uri not matched:  " + uri);
+            throw new UnsupportedOperationException("Uri not matched:  " + uri);
         }
     }
 

@@ -11,7 +11,6 @@ public class Video {
 
     private String key;
     private String name;
-    private String site;
 
     @ParcelConstructor
     public Video(String key, String name) {

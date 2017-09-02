@@ -9,9 +9,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.popmovies.data.Movie;
 import com.example.android.popmovies.data.Review;
@@ -20,7 +17,6 @@ import com.example.android.popmovies.databinding.ActivityDetailBinding;
 import com.example.android.popmovies.events.FavoriteClickHandler;
 import com.example.android.popmovies.events.ReviewClickHandler;
 import com.example.android.popmovies.loaders.DetailLoader;
-import com.example.android.popmovies.loaders.MovieLoader;
 import com.example.android.popmovies.utilities.ErrorDisplayUtils;
 import com.squareup.picasso.Picasso;
 
@@ -46,8 +42,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         Intent mIntent = getIntent();
         myMovie = Parcels.unwrap(mIntent.getParcelableExtra("movieParcel"));
-        if (myMovie != null) {
-        }
+
         if (savedInstanceState != null) {
             reviewIndex = savedInstanceState.getInt("index");
         }
@@ -62,15 +57,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         } else {
             Picasso.with(this).load(myMovie.getBackDropPath()).into(mBinder.dropImageView);
         }
-        mBinder.durationTextView.setText("120 min");
 
         mBinder.synopsisTextView.setText(myMovie.getPlotSynopsis());
         getSupportLoaderManager().initLoader(123, null, this);
 
 
     }
-
-
 
 
     @Override
@@ -84,7 +76,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             final ArrayList<Review> reviews = !data.getReviews().isEmpty() ? data.getReviews() : null;
             final ArrayList<Video> videos = !data.getVideos().isEmpty() ? data.getVideos() : null;
 
-            if (! (videos == null)) {
+            if (!(videos == null)) {
                 ErrorDisplayUtils.hideReviewError(mBinder);
                 mBinder.trailerRecyclerView.setLayoutManager(reviewLayoutManager);
                 mBinder.trailerRecyclerView.setAdapter(new TrailerAdapter(this, videos, this));
@@ -92,7 +84,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 ErrorDisplayUtils.showTrailerError(mBinder);
             }
 
-            if (! (reviews == null)) {
+            if (!(reviews == null)) {
                 ErrorDisplayUtils.hideReviewError(mBinder);
 
                 mBinder.reviewInclude.synopsisFrame.setText(reviews.get(reviewIndex).getContent());

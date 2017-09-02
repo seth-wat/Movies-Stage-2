@@ -1,6 +1,5 @@
 package com.example.android.popmovies.events;
 
-import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -38,7 +37,6 @@ public class ReviewClickHandler implements View.OnClickListener {
         }
 
     }
-
 
 
     @Override

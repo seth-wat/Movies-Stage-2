@@ -1,6 +1,5 @@
 package com.example.android.popmovies.utilities;
 
-import android.util.Log;
 
 import com.example.android.popmovies.data.Movie;
 import com.example.android.popmovies.data.Review;
@@ -46,6 +45,7 @@ public final class JSONUtils {
         }
         return listOfMovies;
     }
+
     public static Movie parseMovieDetails(String rawData, Movie noDetails) {
         try {
             ArrayList<Review> reviewList = new ArrayList<Review>();
