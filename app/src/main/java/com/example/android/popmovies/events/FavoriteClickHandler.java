@@ -60,6 +60,7 @@ public class FavoriteClickHandler implements View.OnClickListener {
                             ContentResolver contentResolver = getContext().getContentResolver();
                             int databaseMovieId = FavoritesOpenHelper.isFavorite(contentResolver, movie.getTitle());
                             if (databaseMovieId != -1) {
+                                contentResolver.delete(FavoritesContract.DELETE_URI, FavoritesContract.MovieEntry._ID + "=?", new String[]{Integer.toString(databaseMovieId)});
                                 return true;
                             }
                             return false;
